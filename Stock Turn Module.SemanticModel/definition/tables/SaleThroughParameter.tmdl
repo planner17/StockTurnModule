@@ -1,0 +1,26 @@
+table SaleThroughParameter
+	lineageTag: baf67f1e-e7c5-4d4a-885d-09552633cf59
+
+	measure 'SaleThroughParameter Value' = SELECTEDVALUE('SaleThroughParameter'[SaleThroughParameter], 0)
+		formatString: 0
+		lineageTag: b86f2bd2-6e56-40ff-98fa-10344052de9b
+
+	column SaleThroughParameter
+		formatString: 0
+		lineageTag: 7135f520-1def-4b1b-91a3-4e2db64aa08c
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition SaleThroughParameter = calculated
+		mode: import
+		source = GENERATESERIES(-5000, 5000, 1)
+
+	annotation PBI_Id = a053486329ab44519ec9fb56b59acf99
+

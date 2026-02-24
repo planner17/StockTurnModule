@@ -1,0 +1,54 @@
+table SizeMaster
+	lineageTag: 14f8ff1e-71d3-4083-94b2-6466a4ff87ac
+
+	column 'Size Name'
+		dataType: string
+		lineageTag: 1091c5af-6f77-4f14-8c66-bd180fc41f74
+		summarizeBy: none
+		sourceColumn: Size Name
+		sortByColumn: 'Size ID'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Size ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b2a1c38-8815-4ca1-8aab-bb69c1bde6ee
+		summarizeBy: count
+		sourceColumn: Size ID
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SizeMaster = m
+		mode: import
+		source =
+				let
+				    Source = ArticleMaster,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Size Name"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Appended Query" = Table.Combine({#"Removed Duplicates", Sizemerger}),
+				    #"Added Custom" = Table.AddColumn(#"Appended Query", "Custom", each let
+				    OrderList = {
+				        "1","2","3","4","5","5.5","6","6.5","7","7.5","8","8.5","9","9.5","10","10.5","11","12","13",
+				        "30","32","34","36","38","44","10H","18 OZ","1SIZE","1Y","24 OZ","28-30","2XL","2XL-T","30-30",
+				        "30-32","32-30","32-32","32-34","34-30","3Y","40 OZ","4-5.5","4MM","4Y","5Y","6-7.5","6Y",
+				        "8-9.5","L","L/G","L/XL","LARGE","L-T","M","M/L","M10","M10W12","M11","M12","M5W7","M6W8",
+				        "M7","M7W9","M8","M8W10","M9","M9W11","MEDIUM","MISC","M-T","OS","OSFM","S","S/M","SMALL",
+				        "S-T","W10","W5","W6","W7","W8","W9","XL","XL-T","XS","XXL","YTH","Opening","Purchase","Sale","Closing","Age","Trend","Status","Salethrough","MRP Value","Size Set"
+				    },
+				    NormOrder = List.Transform(OrderList, each Text.Upper(Text.Trim(_))),
+				    Pos = List.PositionOf(NormOrder, Text.Upper(Text.Trim(Text.From([Size Name]))))
+				in
+				    if Pos = -1 then null else Pos + 1),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"Custom", "Size ID"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,247 @@
+table Calendar
+	lineageTag: 21246b47-7ae3-47fd-bc8c-7d21f26ee74d
+
+	column Date
+		formatString: d mmmm\, yyyy
+		lineageTag: 49258298-e943-46a2-a734-83ac7b539f5e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: bd144136-b34e-434c-ba6d-714df39cd95d
+			defaultHierarchy: LocalDateTable_b94575be-bcbb-4510-a5ed-a6c6575effc8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column DateKey
+		formatString: 0
+		lineageTag: b6aee564-d98e-4e69-a500-41ee5141b7e5
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [DateKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sequential Day Number'
+		formatString: 0
+		lineageTag: 2abfa913-bab5-40c9-a39c-82ad8aadebda
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Sequential Day Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		lineageTag: be2d0b68-92e9-43fc-9981-e28d12d5a71e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month Number'
+		formatString: 0
+		lineageTag: f6b89cf4-e56d-4ac2-93b6-c983273893ad
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		lineageTag: 1aee3bcd-9202-4060-aee0-2f7c2eb239d3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Fiscal Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Number'
+		formatString: 0
+		lineageTag: 8a8aa996-d043-4f5d-b0e7-7f996c839bbe
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Fiscal Year Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Quarter'
+		lineageTag: 769c2ca6-f835-464c-9999-ebd8b8f06a07
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Fiscal Year Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year Quarter Number'
+		formatString: 0
+		lineageTag: 5d70aef1-097c-4d68-bd5a-0af22fcf8d79
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Fiscal Year Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		lineageTag: 341273eb-5dd8-46ec-bf48-d9b8bf428cfd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Fiscal Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: 2b7f3875-22ff-4eb7-a900-003e976e2ff6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month Number'
+		formatString: 0
+		lineageTag: 5c06d83c-2fce-44b5-813f-896fc8c0b8ef
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Fiscal Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Month in Quarter Number'
+		lineageTag: cdfbaae3-2db7-4047-923b-5d279c48c366
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Fiscal Month in Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Day of Week'
+		lineageTag: 25baa253-522d-4d97-b550-53c7bcc79d7f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day of Week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week Number'
+		formatString: 0
+		lineageTag: 4dbbaaea-77f0-4ef6-8305-c52e43ddb71f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day of Week Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Month Number'
+		formatString: 0
+		lineageTag: d90b8da6-0971-4202-baa2-3ab4ed6a73a2
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day of Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Fiscal Year Number'
+		formatString: 0
+		lineageTag: 30fe1ab4-7d34-489a-a78d-5cabf1cb443a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day of Fiscal Year Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Working Day'
+		lineageTag: 6857ead0-dd9c-4ce6-a974-79af7166a6c5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Working Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = calculated
+		mode: import
+		source =
+				
+				// VAR _MinDate = MIN(TradePurchaseTable[INV DATE])
+				VAR _MinDate = MIN('INWARD & OUTWARD'[Transaction Date])
+				VAR _MaxDate = MAX('INWARD & OUTWARD'[Transaction Date]) -- MAX(RetailSale[Voucher Date])
+				VAR FirstFiscalMonth = 4  -- First month of the fiscal year
+				VAR FirstDayOfWeek = 0    -- 0 = Sunday, 1 = Monday, ...
+				VAR FirstCreateDate = _MinDate
+				VAR LastPaymentDate = _MaxDate
+				VAR FirstFiscalYear =     -- Customizes the first fiscal year to use
+				    YEAR ( FirstCreateDate )
+				    + 1 * ( MONTH ( FirstCreateDate ) >= FirstFiscalMonth && FirstFiscalMonth > 1)
+				VAR LastFiscalYear =      -- Customizes the last fiscal year to use
+				    YEAR ( LastPaymentDate )
+				    + 1 * ( MONTH ( LastPaymentDate ) >= FirstFiscalMonth && FirstFiscalMonth > 1)
+				RETURN
+				GENERATE (
+				    VAR FirstDay =
+				        DATE (
+				            FirstFiscalYear - 1 * (FirstFiscalMonth > 1),
+				            FirstFiscalMonth,
+				            1
+				        )
+				    VAR LastDay =
+				        DATE (
+				            LastFiscalYear + 1 * (FirstFiscalMonth = 1),
+				            FirstFiscalMonth, 1
+				        ) - 1
+				    RETURN
+				        CALENDAR ( FirstDay, LastDay ),
+				    VAR CurrentDate = [Date]
+				    VAR Yr = YEAR ( CurrentDate )        -- Year Number
+				    VAR Mn = MONTH ( CurrentDate )       -- Month Number (1-12)
+				    VAR Mdn = DAY ( CurrentDate )        -- Day of Month
+				    VAR DateKey = Yr*10000+Mn*100+Mdn
+				    VAR Wd =                             -- Weekday Number (0 = Sunday, 1 = Monday, ...)
+				        WEEKDAY ( CurrentDate + 7 - FirstDayOfWeek, 1 )
+				    VAR WorkingDay =                     -- Working Day (1 = working, 0 = non-working)
+				        ( WEEKDAY ( CurrentDate, 1 ) IN { 2, 3, 4, 5, 6 } )
+				    VAR Fyr =                            -- Fiscal Year Number
+				        Yr + 1 * ( FirstFiscalMonth > 1 && Mn >= FirstFiscalMonth )
+				    VAR Fmn =                            -- Fiscal Month Number (1-12)
+				        Mn - FirstFiscalMonth + 1 + 12 * (Mn < FirstFiscalMonth)
+				    VAR Fqrn =                           -- Fiscal Quarter (string)
+				        ROUNDUP ( Fmn / 3, 0 )
+				    VAR Fmqn =
+				        MOD ( FMn - 1, 3 ) + 1
+				    VAR Fqr =                            -- Fiscal Quarter (string)
+				        FORMAT ( Fqrn, "\Q0" )
+				    VAR FirstDayOfYear =
+				        DATE ( Fyr - 1 * (FirstFiscalMonth > 1), FirstFiscalMonth, 1 )
+				    VAR Fydn =
+				        SUMX (
+				            CALENDAR ( FirstDayOfYear, CurrentDate ),
+				            1 * ( MONTH ( [Date] ) <> 2 || DAY ( [Date] ) <> 29 )
+				        )
+				    RETURN ROW (
+				        "DateKey", INT ( DateKey ),
+				        "Sequential Day Number", INT ( [Date] ),
+				        "Year Month", FORMAT ( CurrentDate, "mmm yyyy" ),
+				        "Year Month Number", Yr * 12 + Mn - 1,
+				        "Fiscal Year", "FY " & Fyr - 1&"-"&right(Fyr,2),
+				        "Fiscal Year Number", Fyr,
+				        "Fiscal Year Quarter", "F" & Fqr & "-" & Fyr,
+				        "Fiscal Year Quarter Number", CONVERT ( Fyr * 4 + FQrn - 1, INTEGER ),
+				        "Fiscal Quarter", "F" & Fqr,
+				        "Month", FORMAT ( CurrentDate, "mmm" ),
+				        "Fiscal Month Number", Fmn,
+				        "Fiscal Month in Quarter Number", Fqrn, -- Fmqn,
+				        "Day of Week", FORMAT ( CurrentDate, "ddd" ),
+				        "Day of Week Number", Wd,
+				        "Day of Month Number", Mdn,
+				        "Day of Fiscal Year Number", Fydn,
+				        "Working Day", IF ( WorkingDay, "Working Day", "Non-Working Day" )
+				    )
+				)
+
+	annotation PBI_Id = 2e06bebaf88f46979513f4af84ee0427
+

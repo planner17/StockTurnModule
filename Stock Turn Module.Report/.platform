@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Stock Turn Module"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4f74899b-fa55-4653-99d6-422c3a90b4d5"
+  }
+}

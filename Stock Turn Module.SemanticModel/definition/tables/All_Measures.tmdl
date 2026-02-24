@@ -1,0 +1,977 @@
+table All_Measures
+	lineageTag: 1aa2f049-b6eb-4837-83a9-cb657817157c
+
+	measure Age = ```
+			
+			var _opening = SWITCH(TRUE(),
+			                    [Closing] = 0, [Opening],
+			                    [Purchase] = BLANK(), [Opening],
+			                    [Openingconfirmation] = 0 ,[Opening],0)
+			var _closing = [Closing]
+			var ifclosingzero = IF([Closing] = 0, [Purchase], CALCULATE([Purchase], 'INWARD & OUTWARD'[Islatestdate] = TRUE()))
+			var _purchasenOpening = ifclosingzero + _opening
+			var _purchaseproduct = [PurchaseforWA]
+			var _sale = [Sale]
+			
+			
+			var _lasttransactiondate = IF(_closing = 0 && _sale <> 0,MAX('INWARD & OUTWARD'[MaxSaleDate]),
+			                                    // [MaxSaleDate], 
+			                                    TODAY())
+			
+			
+			var _daydiff  = IF(HASONEVALUE('Calendar'[Date]), BLANK(),
+			                        IF(_purchaseproduct + _opening <> BLANK(),
+			                            _lasttransactiondate - ROUND(DIVIDE(_purchaseproduct, _purchasenOpening), 0)))
+			
+			
+			var _age = IF(_closing = 0 && _sale = 0 , BLANK(), INT(_daydiff))
+			
+			RETURN    
+			IF(HASONEVALUE(LocationMaster[Code]), _age)
+			
+			```
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: d391bec7-30e4-4e4c-bf33-06f34a210ef6
+
+	measure Opening = SUM(OBS_sheet[OBS Qty])
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: 6bfe6fee-e418-4302-962b-5d45cc54fb07
+
+	measure Purchase = ```
+			
+			
+			CALCULATE(
+			SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			'INWARD & OUTWARD'[Transaction type] IN { "Group Purchase", "Party Credit Note", "Party Purchase" })
+			
+			
+			
+			
+			// VAR _LocTable = VALUES( LocationMaster[Code] )  -- visible locations in the current filter context
+			// RETURN
+			// SUMX(
+			//     _LocTable,
+			//     VAR _loc = LocationMaster[Code]
+			
+			//     VAR _LASAPurchase =
+			//         CALCULATE(
+			//             SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			//             'INWARD & OUTWARD'[Transaction type] IN { "Group Purchase", "Party Credit Note", "Party Purchase" },
+			//             'INWARD & OUTWARD'[ISfresh] = TRUE(),
+			//             LocationMaster[Code] = _loc
+			//         )
+			
+			//     VAR _BranchPurchase =
+			//         CALCULATE(
+			//             SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			//             'INWARD & OUTWARD'[Transaction type] = "Group Purchase",
+			//             LocationMaster[Code] = _loc
+			//         )
+			
+			//     VAR _ThisLocationPurchase = IF( _loc IN { "LA", "SA" }, _LASAPurchase, _BranchPurchase )
+			
+			//     RETURN _ThisLocationPurchase
+			// )
+			
+			```
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: f4da384c-bd1b-444f-866c-6cb340cead2d
+
+	measure Ageslicer = ```
+			
+			
+			VAR _ignoreblank =
+			    CALCULATE(
+			        [Age],
+			        REMOVEFILTERS('Calendar')
+			    )
+			VAR _param = AgeParameter[AgeParameter Value]
+			
+			var _min = MIN(AgeParameter[AgeParameter])
+			var _max = MAX(AgeParameter[AgeParameter])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        // _param = 0, 1,   --Remark- if slicer = 0, keep everything (no filter)
+			        // ISBLANK(_ignoreblank), 0,  --Remkar- blank % should be excluded when slicer > 0
+			        // (_ignoreblank) > _param, 1,
+			        _ignoreblank >= _min && _ignoreblank <= _max, 1, 
+			        0
+			
+			)
+			```
+		formatString: 0
+		displayFolder: Slicers
+		lineageTag: 3ef979a1-a40b-491b-9e6e-f5fbb6a1819d
+
+	measure Sale = ```
+			
+			
+			CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			                    TransactionType[type] in {"Party Wholesale", "Retail Sales"}) 
+			
+			
+			
+			// -- LA, SA Rule 
+			//         --Tranction type = "Party Wholesale"
+			
+			// -- Bramch Rule- Tranction type = {"Party Wholesale", "Retail Sales"}
+			
+			
+			// var _LASASale = CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			//                     TransactionType[type] in {"Party Wholesale"})  
+			
+			
+			// var _BranchSale = CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			//                     TransactionType[type] in {"Party Wholesale", "Retail Sales"})  
+			
+			// RETURN
+			//     IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"}, _LASASale, _BranchSale)
+			```
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: b9d6c8cc-ab97-47a8-b62b-871af300337b
+
+	measure Outward = ```
+			
+			
+			
+			CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]), 
+			                            'INWARD & OUTWARD'[Transaction type] in {"Group Wholesale", "Delivery Challan(WSL", "Group Debitnote"})
+			
+			// -- Rule for LA, SA - Transaction Type = "Group Wholesale", "Group Wholesale"
+			// -- Rule For Branch - Transaction Type = {"Group Wholesale", "Delivery Challan(WSL", "Group Debitnote"}
+			
+			// var _LASAOutward =    CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]), 
+			//                             'INWARD & OUTWARD'[Transaction type] = "Group Wholesale")
+			
+			
+			// var _BranchOutward =    CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]), 
+			//                             'INWARD & OUTWARD'[Transaction type] in {"Group Wholesale", "Delivery Challan(WSL", "Group Debitnote"})
+			
+			// RETURN
+			//         IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"}, _LASAOutward, _BranchOutward)
+			```
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: feb67be7-618e-4116-81cf-8584d1f6de98
+
+	measure Closing = CALCULATE(SUM(OBS_sheet[CBS Qty]), USERELATIONSHIP('Calendar'[Date], OBS_sheet[ClosingDate]))
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: 33b7d70d-7e91-4e58-a791-8a2565828fa3
+
+	measure PurchaseforWA = ```
+			
+			
+			var _purchaseproductifclosingzero =   CALCULATE(SUM('INWARD & OUTWARD'[sum_product]), 
+			                        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"})
+			
+			var _purchaseproductifclosingnotzero =   CALCULATE(SUM('INWARD & OUTWARD'[sum_product]), 
+			                                                        'INWARD & OUTWARD'[Islatestdate] = TRUE(),
+			                        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"})
+			
+			
+			
+			
+			//  var _Branchpurchaseproductifclosingzero =   CALCULATE(SUM('INWARD & OUTWARD'[sum_product]), 
+			//                             'INWARD & OUTWARD'[Transaction type] = "Group Purchase")
+			
+			//  var _LASApurchaseproductifclosingzero =   CALCULATE(SUM('INWARD & OUTWARD'[sum_product]), 
+			//                         'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"},
+			//                         'INWARD & OUTWARD'[ISfresh] = TRUE())
+			
+			//  var _Branchpurchaseproductifclosingnotzero =   CALCULATE(SUM('INWARD & OUTWARD'[sum_product]), 
+			//                                                         'INWARD & OUTWARD'[Islatestdate] = TRUE(),
+			//                                                         'INWARD & OUTWARD'[Transaction type] = "Group Purchase")
+			
+			//  var _LASApurchaseproductifclosingnotzero =   CALCULATE(SUM('INWARD & OUTWARD'[sum_product]), 
+			//                                                         'INWARD & OUTWARD'[Islatestdate] = TRUE(),
+			//                         'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"},
+			//                         'INWARD & OUTWARD'[ISfresh] = TRUE())
+			
+			
+			// var _purchaseproductifclosingzero = IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"}, 
+			//                                                     _LASApurchaseproductifclosingzero, 
+			//                                                     _Branchpurchaseproductifclosingzero)
+			
+			
+			// var _purchaseproductifclosingnotzero = IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"}, 
+			//                                                     _LASApurchaseproductifclosingnotzero, 
+			//                                                     _Branchpurchaseproductifclosingnotzero)
+			
+			
+			
+			
+			 var _openingproduct = [Opening] * DATE(2025, 4, 1)
+			
+			//  RETURN
+			//     // _purchaseproduct + _openingproduct
+			//     IF([Closing] = 0,_purchaseproductifclosingzero,_purchaseproductifclosingnotzero)
+			//     + 
+			//     // IF([Openingconfirmation] = 0 && [Opening] <> 0, _openingproduct, 0)
+			//     IF([Openingconfirmation] = 0 , _openingproduct, 0)
+			
+			
+			RETURN
+			    // _purchaseproduct + _openingproduct
+			    IF([Closing] = 0,_purchaseproductifclosingzero,_purchaseproductifclosingnotzero)
+			    + 
+			    // IF([Openingconfirmation] = 0 && [Opening] <> 0, _openingproduct, 0)
+			    SWITCH(TRUE(),
+			                    [Closing] = 0, _openingproduct,
+			                    [Purchase] = BLANK(), _openingproduct,
+			                    [Openingconfirmation] = 0 ,_openingproduct,0)
+			
+			```
+		displayFolder: StockTurnCalcuation
+		lineageTag: 2b472d7e-27cd-4f39-8f30-3b6d9674929d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ExpectedSale = ```
+			
+			
+			var _opening = SWITCH(TRUE(),
+			                    [Closing] = 0, [Opening],
+			                    [Purchase] = BLANK(), [Opening],
+			                    [Openingconfirmation] = 0 ,[Opening],0)
+			var _closing = [Closing]
+			var ifclosingzero = IF([Closing] = 0, [Purchase], CALCULATE([Purchase], 'INWARD & OUTWARD'[Islatestdate] = TRUE()))
+			var _purchasenOpening =ifclosingzero + _opening
+			var _purchaseproduct = [PurchaseforWA]
+			var _sale = [Sale]
+			
+			
+			var _lasttransactiondate = IF(_closing = 0 && _sale <> 0,
+			                                    CALCULATE(
+			                                        MAX('INWARD & OUTWARD'[MaxSaleDate]),
+			                                        // [MaxSaleDate], 
+			                                        REMOVEFILTERS(TransactionType)), TODAY())
+			
+			var _daydiff  = IF(HASONEVALUE('Calendar'[Date]), BLANK(),
+			                        IF(_purchaseproduct + _opening <> BLANK(),
+			                            _lasttransactiondate - ROUND(DIVIDE(_purchaseproduct, _purchasenOpening), 0)))
+			
+			VAR _minDate = 
+			    CALCULATE(MIN('INWARD & OUTWARD'[Transaction Date]),
+			        FILTER('INWARD & OUTWARD',
+			        'INWARD & OUTWARD'[Islatestdate] = TRUE() &&
+			        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Purchase"} &&
+			        'INWARD & OUTWARD'[ISfresh] = TRUE()
+			    ))
+			
+			VAR _purchaseafternewdate =
+			                    IF(HASONEVALUE('Calendar'[Date]), BLANK(),
+			                        CALCULATE(
+			                            [Purchase],
+			                            'Calendar'[Date] >= _minDate
+			                        ))
+			
+			
+			var _ifclosingzero = IF(_closing = 0, [Purchase] + [Opening], _purchaseafternewdate + _opening)
+			var _runrate = DIVIDE(_ifclosingzero, MIN('ShelfLifeParameter'[Shelf Life]))
+			
+			var _age = IF(_closing = 0 && _sale = 0 , BLANK(), INT(_daydiff))
+			
+			var _SaleVelocity = IF(HASONEVALUE('Calendar'[Date]), BLANK(), _runrate * _age)
+			
+			
+			RETURN
+			IF(HASONEVALUE(LocationMaster[Code]), _SaleVelocity)
+			
+			```
+		displayFolder: StockTurnCalcuation
+		lineageTag: a692f226-f11b-466d-b92c-46c80efb2421
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure MovementTrend = ```
+			
+			// var _opening = IF([Openingconfirmation] = 0 ,[Opening],0)
+			
+			var _opening = SWITCH(TRUE(),
+			                    [Closing] = 0, [Opening],
+			                    [Purchase] = BLANK(), [Opening],
+			                    [Openingconfirmation] = 0 ,[Opening],0)
+			
+			var _purchaseproduct = [PurchaseforWA]
+			// var _sale =[salewithwa]
+			
+			VAR _minDate = 
+			    CALCULATE(MIN('INWARD & OUTWARD'[Transaction Date]),
+			        FILTER('INWARD & OUTWARD',
+			        'INWARD & OUTWARD'[Islatestdate] = TRUE() &&
+			        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Purchase"} &&
+			        'INWARD & OUTWARD'[ISfresh] = TRUE()
+			    ))
+			
+			VAR _sale =
+			                    IF(HASONEVALUE('Calendar'[Date]), BLANK(),
+			                        CALCULATE(
+			                            [Sale],
+			                            'Calendar'[Date] >= _minDate
+			                        ))
+			
+			
+			
+			var _SaleVelocity = [ExpectedSale]
+			
+			var _movement =  IF(_purchaseproduct + _opening <> BLANK(), 
+			                                            DIVIDE(_sale, _SaleVelocity))
+			
+			
+			RETURN
+			
+			    _movement
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: StockTurnCalcuation
+		lineageTag: 0b7edd7c-af9b-4621-a0f2-7e3c8a406743
+
+	measure Status = ```
+			
+			// var _opening = IF([Openingconfirmation] = 0 ,[Opening],0)
+			var _closing = [Closing]
+			// var _purchasenOpening = CALCULATE([Purchase], 'INWARD & OUTWARD'[Islatestdate] = TRUE()) + _opening
+			// var _purchaseproduct = [PurchaseforWA]
+			// var _sale = [salewithwa]
+			
+			VAR _minDate = 
+			    CALCULATE(MIN('INWARD & OUTWARD'[Transaction Date]),
+			        FILTER('INWARD & OUTWARD',
+			        'INWARD & OUTWARD'[Islatestdate] = TRUE() &&
+			        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Purchase"} &&
+			        'INWARD & OUTWARD'[ISfresh] = TRUE()
+			    ))
+			
+			VAR _sale =
+			                    IF(HASONEVALUE('Calendar'[Date]), BLANK(),
+			                        CALCULATE(
+			                            [Sale],
+			                            'Calendar'[Date] >= _minDate
+			                        ))
+			
+			
+			var _SaleVelocity = [ExpectedSale]
+			
+			// 0%	0-20%	Super Slow
+			// 21%	21-40%	Slow
+			// 41%	41-60%	Medium
+			// 61%	61-80%	Fast
+			// 81%	81%-100%	Super Fast
+			
+			// var _status = IF(_purchaseproduct + _opening <> BLANK(), 
+			//             SWITCH(TRUE(),
+			//                     DIVIDE(_sale, _SaleVelocity) > 0.8, "Super Fast",
+			//                     DIVIDE(_sale, _SaleVelocity) > 0.6, "Fast",
+			//                     DIVIDE(_sale, _SaleVelocity) > 0.4, "Medium",
+			//                     DIVIDE(_sale, _SaleVelocity) > 0.2, "Slow",
+			//                     DIVIDE(_sale, _SaleVelocity) > 0, "Super Slow",
+			//                     DIVIDE(_sale, _SaleVelocity) = 0 
+			//                     && 
+			//                     not HASONEVALUE('Calendar'[Date])
+			//                     && _closing <> 0, "Dead"
+			//                     ))
+			
+			RETURN
+			// _status 
+			    IF(HASONEVALUE(LocationMaster[Code]),
+			            SWITCH(TRUE(),
+			                    DIVIDE(_sale, _SaleVelocity) > 0.8, "Super Fast",
+			                    DIVIDE(_sale, _SaleVelocity) > 0.6, "Fast",
+			                    DIVIDE(_sale, _SaleVelocity) > 0.4, "Medium",
+			                    DIVIDE(_sale, _SaleVelocity) > 0.2, "Slow",
+			                    DIVIDE(_sale, _SaleVelocity) > 0, "Super Slow",
+			                    DIVIDE(_sale, _SaleVelocity) = 0 
+			                    && 
+			                    not HASONEVALUE('Calendar'[Date])
+			                    && _closing <> 0, "Dead"
+			                    ))
+			```
+		displayFolder: StockTurnCalcuation
+		lineageTag: 392aeb62-4756-4f56-829f-0c6020c3c24c
+
+	measure Salethrough = ```
+			
+			var _opening = [Opening]
+			var _closing = [Closing]
+			var _purchasenOpening = [Purchase] + _opening
+			var _purchaseproduct = [PurchaseforWA]
+			var _sale = [Sale]
+			
+			
+			var _salethrough = IF(HASONEVALUE('Calendar'[Date]), BLANK(),
+			                        IF(_purchaseproduct + _opening <> BLANK(),
+			                            DIVIDE(_sale,  _purchasenOpening)))
+			
+			
+			RETURN
+			_salethrough
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: StockTurnCalcuation
+		lineageTag: 364bc75a-cc24-4607-8252-39d7820f265f
+
+	measure MaxSaleDate = ```
+			
+			CALCULATE(MAX('INWARD & OUTWARD'[MaxSaleDate]),
+			                    'INWARD & OUTWARD'[Transaction type] in {"Party Wholesale", "Retail Sales"})  
+			```
+		formatString: General Date
+		displayFolder: StockTurnCalcuation
+		lineageTag: 3b2a2b85-9df2-4c21-9505-3886dc92b3be
+
+	measure Salevelocity_slicer =
+			
+			
+			var _ignoreblank = CALCULATE(
+			    [ExpectedSale],
+			    REMOVEFILTERS('Calendar')
+			)
+			
+			var _min = MIN(SaleVelocityparameter[SaleVelocityparameter])
+			var _max = MAX(SaleVelocityparameter[SaleVelocityparameter])
+			
+			RETURN
+			
+			IF(
+			    // _ignoreblank > SaleVelocityparameter[SaleVelocityparameter Value],
+			    _ignoreblank >= _min && _ignoreblank <= _max,
+			    1
+			)
+		formatString: 0
+		displayFolder: Slicers
+		lineageTag: a1a518e4-5d16-4621-82e1-3b6d47795b3f
+
+	measure SaleThorughslicer = ```
+			
+			
+			VAR _ignoreblank =
+			    CALCULATE(
+			        [Salethrough],
+			        REMOVEFILTERS('Calendar')
+			    )
+			VAR _param = SaleThroughParameter[SaleThroughParameter Value]
+			var _min = MIN(SaleThroughParameter[SaleThroughParameter])
+			var _max = MAX(SaleThroughParameter[SaleThroughParameter])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        // _param = 0, 1,   --Remark- if slicer = 0, keep everything (no filter)
+			        // ISBLANK(_ignoreblank), 0,  --Remkar- blank % should be excluded when slicer > 0
+			        // (_ignoreblank * 100) > _param, 1,
+			        (_ignoreblank * 100) >= _min && (_ignoreblank * 100) <= _max, 1,
+			        0
+			    )
+			
+			
+			```
+		formatString: 0
+		displayFolder: Slicers
+		lineageTag: f165bc42-768f-4d0a-8eaf-e7f79ec55066
+
+	measure movementslicer = ```
+			
+			
+			VAR _ignoreblank =
+			    CALCULATE(
+			        [MovementTrend],
+			        REMOVEFILTERS('Calendar')
+			    )
+			VAR _param = MovementParameter[MovementParameter Value]
+			var _min = MIN(MovementParameter[MovementParameter])
+			var _max = MAX(MovementParameter[MovementParameter])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        // _param = 0, 1,   --Remark- if slicer = 0, keep everything (no filter)
+			        // ISBLANK(_ignoreblank), 0,  --Remkar- blank % should be excluded when slicer > 0
+			        // (_ignoreblank * 100) > _param, 1,
+			        (_ignoreblank * 100) >= _min && (_ignoreblank * 100) <= _max,1,
+			        0
+			    )
+			
+			
+			```
+		formatString: 0
+		displayFolder: Slicers
+		lineageTag: ecfeafc3-0349-4fa1-8581-799450105a98
+
+	measure closingwithGT% =
+			
+			var _closing = CALCULATE([Closing], REMOVEFILTERS(LocationMaster[Code]), not LocationMaster[Code]  in {"LA","SA","HP","LS"})
+			RETURN
+			 [Closing] & " (" & FORMAT(DIVIDE([Closing], _closing), "0%") & ")"
+		displayFolder: StockTurnCalcuation
+		lineageTag: ff52f7d1-0710-4248-924a-6a629a0b3b7f
+
+	measure 'Mrp Value' = CALCULATE(SUM(OBS_sheet[MRPValue]), USERELATIONSHIP('Calendar'[Date], OBS_sheet[ClosingDate]))
+		formatString: #,0
+		displayFolder: StockTurnCalcuation
+		lineageTag: 3f26ff20-aff0-4ca4-9a8e-5bee5d47f307
+
+	measure closingwithpercent =
+			
+			var _closing = CALCULATE([Closing], REMOVEFILTERS(ArticleMaster[sizewithlabel]))
+			RETURN
+			    "Qty : " & [Closing] & " (" & FORMAT(DIVIDE([Closing], _closing), "0%") &")"
+		displayFolder: StockTurnCalcuation
+		lineageTag: ca638a26-344e-4f89-8ec1-1977685617aa
+
+	measure TitlewithtotalInventory = ```
+			
+			         "On Hand Inventory " &  FORMAT([Closing], "#,##,##0") & " of MRP Value " & "₹ " & FORMAT([Mrp Value] , "#,##,##0")
+			```
+		displayFolder: StockTurnCalcuation
+		lineageTag: 60ac4c53-00aa-4f32-ab89-f194db62c86e
+
+	measure latestOBS = ```
+			
+			var Min_OBS = format(MIN(OBS_sheet[OpeningDate]),"dd-mm-yyyy")
+			var Max_OBS = format(max('INWARD & OUTWARD'[Transaction Date]),"dd-mm-yyyy")
+			
+			
+			RETURN
+			
+			"OBS : " &  Min_OBS & " "& "to" & " " & Max_OBS 
+			
+			```
+		displayFolder: StockTurnCalcuation
+		lineageTag: 76892944-8ed0-4fbf-bb0b-98c41543d54d
+
+	measure LatestInOut = ```
+			
+			var Min_Inout = format(MIN('INWARD & OUTWARD'[Transaction Date]),"dd-mm-yyyy")
+			var Max_Inout = format(Max('INWARD & OUTWARD'[Transaction Date]),"dd-mm-yyyy")
+			
+			RETURN
+			 " Inward Outward : " & Min_Inout & " " & "to" & " " & Max_Inout
+			 
+			```
+		displayFolder: StockTurnCalcuation
+		lineageTag: 4625889b-786b-407f-a656-d761c297e634
+
+	measure Openingconfirmation = ```
+			
+			
+			
+			var _sizewise = CALCULATE(COUNT('INWARD & OUTWARD'[diff]), 
+			                                'INWARD & OUTWARD'[diff] <= 0,
+			                                'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"})
+			
+			var _article = CALCULATE(COUNT(Purchases[diff]), 
+			                                Purchases[diff] <= 0)
+			
+			
+			RETURN
+			    IF(_article < 0, 1, IF(_sizewise < 0,1, 0))
+			//     // IF(_sizewise = 0 , IF(_article > 0, 1, 0))
+			
+			// var _Branch = CALCULATE(COUNT('INWARD & OUTWARD'[diff]), 
+			//                                                 'INWARD & OUTWARD'[diff] >= 0,
+			//                                                 'INWARD & OUTWARD'[Transaction type] = "Group Purchase")
+			
+			// var _LASA = CALCULATE(COUNT('INWARD & OUTWARD'[diff]), 
+			//                                 'INWARD & OUTWARD'[diff] >= 0,
+			//                                 'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"},
+			//                                 'INWARD & OUTWARD'[ISfresh] = TRUE())
+			
+			// RETURN
+			//     IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"}, _LASA, _Branch))
+			```
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: f9cb85a1-9251-4a17-9a6c-7835543e6ebd
+
+	measure salewithwa =
+			
+			
+			var _opening = IF([Openingconfirmation] = 0 ,[Opening],0)
+			// var _closing = [Closing]
+			var ifclosingzero = IF([Closing] = 0, [Purchase], CALCULATE([Purchase], 'INWARD & OUTWARD'[Islatestdate] = TRUE()))
+			var _purchasenOpening = ifclosingzero + _opening
+			var _purchaseproduct = [PurchaseforWA]
+			var _sale = CALCULATE([Sale], FILTER('INWARD & OUTWARD', 'INWARD & OUTWARD'[Transaction Date] >= DIVIDE(_purchaseproduct, _purchasenOpening)))
+			
+			RETURN
+			    _sale
+		formatString: 0
+		displayFolder: StockTurnCalcuation
+		lineageTag: 597347ea-190e-429f-bed0-33e1722779d8
+
+	measure statusslicer = ```
+			
+			  VAR _ignoreblank =
+			    CALCULATE(
+			        [Status],
+			        REMOVEFILTERS('Calendar')
+			    )
+			VAR _param = VALUES('Status filter'[Status])
+			
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			_ignoreblank = BLANK() && COUNT('Status filter'[Status]) = 6 , 1,        
+			_ignoreblank in _param , 1,
+			        0
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Slicers
+		lineageTag: a21cf509-7324-4024-b4fa-05b85e3008c0
+
+	measure Size_values = ```
+			
+			  SWITCH(TRUE(),
+			         SELECTEDVALUE(SizeMaster[Size Name]) = "Age", [Age],
+			         SELECTEDVALUE(SizeMaster[Size Name]) = "MRP Value", [Mrp Value],
+			         SELECTEDVALUE(SizeMaster[Size Name]) = "Status", IF([Closing] <> 0 && SELECTEDVALUE(LocationMaster[Code]) in 
+			                                            {"HP", "LS"}, "NA", [status]),
+			        SELECTEDVALUE(SizeMaster[Size Name]) = "Size Set", [CutsizeOrFullsize],
+			        CALCULATE([Closing], USERELATIONSHIP(SizeMaster[Size Name], ArticleMaster[Size Name])))
+			```
+		formatString: #,0
+		lineageTag: e33fcf48-1f23-49b6-a4d7-40bdbb1072f8
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure salethroughcolor = ```
+			
+			    SWITCH(TRUE(),
+			                    [Salethrough] > 0.8, "#148030", -- Green
+			                    [Salethrough] > 0.6, "#48BC66", -- Green
+			                    [Salethrough] > 0.4, "#90903A", --Yellow
+			                    [Salethrough] > 0.2, "#D93642", -- Red
+			                    [Salethrough] > 0, "#A70511", -- Red
+			                    [Salethrough] = 0, "#F28088" -- Red
+			                    )
+			```
+		lineageTag: 3423d4b9-efc5-4960-b37c-813bb78bde8a
+
+	measure Firstin_Date = ```
+			
+			
+			var _FirstPurchasedateBranch = CALCULATE(MIN('INWARD & OUTWARD'[Transaction Date]),
+			                                                         'INWARD & OUTWARD'[Transaction type] = "Group Purchase")
+			
+			var _FirstPurchasedateLASA = CALCULATE(MIN('INWARD & OUTWARD'[Transaction Date]),
+			                        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"},
+			                        'INWARD & OUTWARD'[ISfresh] = TRUE())
+			
+			var  _FirstPurchasedate =  IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"},
+			                                            _FirstPurchasedateLASA, _FirstPurchasedateBranch)
+			
+			VAR _Firstinvdate = IF(_FirstPurchasedate = BLANK() && [Opening] <> 0, 
+			                                        DATE(2025,4,1) , _FirstPurchasedate)                                                     
+			RETURN
+			IF(HASONEVALUE(LocationMaster[Code]),
+			    _Firstinvdate)
+			```
+		formatString: General Date
+		lineageTag: e2ab1a1e-da97-4599-a511-d7dd102b34ac
+
+	measure Lastin_Date = ```
+			
+			
+			var _LastPurchasedateBranch = CALCULATE(max('INWARD & OUTWARD'[Transaction Date]),
+			                                                         'INWARD & OUTWARD'[Transaction type] = "Group Purchase")
+			
+			var _LastPurchasedateSALA = CALCULATE(max('INWARD & OUTWARD'[Transaction Date]),
+			                        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"},
+			                        'INWARD & OUTWARD'[ISfresh] = TRUE())
+			
+			var  _LastPurchasedate =  IF(SELECTEDVALUE(LocationMaster[Code]) in {"LA", "SA"},
+			                                            _LastPurchasedateSALA, _LastPurchasedateBranch)
+			                                                         
+			
+			VAR _Lastinvdate = IF(_LastPurchasedate = BLANK() && [Opening] <> 0, 
+			                                        DATE(2025,4,1) , _LastPurchasedate)                                                     
+			RETURN
+			IF(HASONEVALUE(LocationMaster[Code]),
+			    _Lastinvdate)
+			```
+		formatString: General Date
+		lineageTag: ccf3628d-8f9a-44c7-8543-eb34fe7ee0f3
+
+	measure 'Sale Avg' =
+			
+			var _shelfdays = SELECTEDVALUE(ShelfLifeParameter[Shelf Life])
+			var _setdate = TODAY() - _shelfdays
+			var _refrencedate = IF(_setdate < [Firstin_Date], [Firstin_Date], _setdate)
+			var _Sale = CALCULATE([Sale], 'Calendar'[Date] >= _refrencedate)
+			var _daysofcalculation = DATEDIFF(_refrencedate,TODAY(), DAY)
+			var _saleavg = DIVIDE(_Sale, _daysofcalculation) * _shelfdays
+			RETURN
+			
+			   _saleavg
+			    // CALCULATE([Sale], 'Calendar'[Date] >= _refrencedate)
+		formatString: 0.00
+		lineageTag: ccfeb5d5-ff79-41af-aeb2-10e04cdfec6a
+
+	measure selectedcode = SELECTEDVALUE(LocationMaster[Code]) & " || " & SELECTEDVALUE(LocationMaster[LocationName])
+		lineageTag: df0fc337-9e21-4b54-be96-d6f96ed5cdbe
+
+	measure suggestionRefill = ```
+			
+			   IF([Closing] < [Sale Avg], ROUND([Sale Avg] - [Closing], 0))
+			```
+		lineageTag: df64fee0-0fa4-407d-97a4-5d5edccefdd8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure suggestionResuffle = ```
+			
+			   IF([Closing] > [Sale Avg], ROUND([Closing] - [Sale Avg], 0))
+			```
+		lineageTag: 62dcfffa-2663-4477-8b88-d7d6a5eaea6e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure suggestionrecal = [Closing]
+		formatString: 0
+		lineageTag: 9d7506bb-0376-4e16-8af9-33f6d7742f28
+
+	measure statusConditional = ```
+			
+			    CALCULATE([Status], ArticleMaster[Article No] = SELECTEDVALUE(ArticleMaster[Article No]))
+			```
+		lineageTag: 931e164e-7b0d-4119-b802-34d12964377c
+
+	measure RefilFromSuggetion = ```
+			
+			
+			// var _allLocation = 
+			//         CONCATENATEX(
+			//             FILTER(
+			//                 ALL(LocationMaster[Code]),
+			//                 not [Status] IN {"Fast", "Super Fast", "Medium", BLANK()} && [Closing] > 0
+			//             ),
+			//             LocationMaster[Code] & ": " & [Status] & ": " & [Closing],
+			//             ", "
+			//         )
+			
+			var _superslow = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Super Slow" && [Closing] > 0 &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] & " from  " & [Age] & " days" & " Avl stk- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			var _slow = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Slow" && [Closing] > 0 &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] & " from " & [Age] & " days" & " Avl stk- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			
+			
+			var _dead = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Dead" && [Closing] > 0 &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] & " from " & [Age] & " days" & " Avl stk- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			var _medium = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Medium" && [Closing] > 0 &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] & " from " & [Age] & " days" & " Avl stk- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			RETURN 
+			IF(ISINSCOPE(LocationMaster[Code]),
+			   SWITCH(TRUE(),
+			            [Status] = "Super Fast", COALESCE(_superslow, _slow, _medium, _dead),
+			            [Status] = "Fast", COALESCE(_slow, _medium, _dead),
+			            [Status] = "Medium" , COALESCE(_medium, _dead)
+			            ))
+			   
+			
+			
+			```
+		lineageTag: a2e5b2b7-6f9d-4836-bf47-94bbc1522c09
+		dataCategory: Uncategorized
+
+	measure ReshuffletoSuggetion = ```
+			
+			
+			// var _allLocation = 
+			//         CONCATENATEX(
+			//             FILTER(
+			//                 ALL(LocationMaster[Code]),
+			//                 not [Status] IN {"Fast", "Super Fast", "Medium", BLANK()} && [Closing] > 0
+			//             ),
+			//             LocationMaster[Code] & ": " & [Status] & ": " & [Closing],
+			//             ", "
+			//         )
+			
+			var _superfast = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Super Fast"  &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] 
+			            & " with Salethrough " & FORMAT([Salethrough], "0.00%") & " CBS- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			var _fast = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Fast"  &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] 
+			            & " with Salethrough " & FORMAT([Salethrough], "0.00%") & " CBS- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			
+			
+			
+			var _medium = 
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                [Status] = "Medium"  &&
+			                LocationMaster[Code] <> SELECTEDVALUE(LocationMaster[Code])
+			            ),
+			            LocationMaster[Code] & ": " & [Status] 
+			            & " with Salethrough " & FORMAT([Salethrough], "0.00%") & " CBS- " & [Closing],
+			            UNICHAR(10)
+			        )
+			
+			RETURN 
+			IF(ISINSCOPE(LocationMaster[Code]),
+			   SWITCH(TRUE(),
+			            [Status] = "Super slow" || [Status] = "Dead" , COALESCE(_superfast, _fast, _medium),
+			            [Status] = "Slow", COALESCE(_fast,_superfast, _medium)
+			            ))
+			   
+			
+			
+			```
+		lineageTag: 0b4efef9-660e-45ca-a0cd-53def7e1ddc5
+
+	measure CutsizeOrFullsize = ```
+			
+			
+			var _sizesetcount = CALCULATE(COUNT('Size Set'[Size]), 
+			                                    'Size Set'[Brand] = SELECTEDVALUE(ArticleMaster[Brand Name]),
+			                                    'Size Set'[Gender] = SELECTEDVALUE(ArticleMaster[Gender]),
+			                                    'Size Set'[Section Name] = SELECTEDVALUE(ArticleMaster[Section Name]),
+			                                    'Size Set'[Status] = "Avl")
+			
+			var _countgreaterzero = CALCULATE(
+			                                COUNTROWS(
+			                                    FILTER(
+			                                        SUMMARIZE(
+			                                            'Size Set',
+			                                            'Size Set'[Size]
+			                                        ),
+			                                        [Closing]  > 0
+			                                    )
+			                                ), 'Size Set'[Status] = "Avl" )
+			RETURN 
+			// _sizesetcount
+			IF([Closing] > 0, 
+			IF(_sizesetcount > _countgreaterzero, "Cut Size", "Full Size"))
+			```
+		lineageTag: 801e5058-3d90-4d14-bbe8-5d07c7c1ea96
+
+	measure SizeSetSlicer = ```
+			
+			  VAR _ignoreblank = [CutsizeOrFullsize]
+			    // CALCULATE(
+			    //     [CutsizeOrFullsize],
+			    //     REMOVEFILTERS(LocationMaster[Code])
+			    // )
+			VAR _param = VALUES(SizeSetFilter[Size-Set])
+			
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			_ignoreblank = BLANK() && COUNT(SizeSetFilter[Size-Set]) = 2 , 1,        
+			_ignoreblank in _param , 1,
+			        0
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 0a94c91d-8195-4090-adf5-58af0460c8bf
+
+	measure 'Slow at %' = ```
+			
+			var _totalstore =    COUNTX(FILTER(ALL(LocationMaster), 
+			                                    ([Opening] + [Purchase]) > 0 &&
+			                                    not LocationMaster[Code] in {"HP", "LS"}), LocationMaster[Code])
+			var _slowatCount = COUNTX(FILTER(ALL(LocationMaster), 
+			                        [Status] in {"Slow", "Super Slow", "Dead"}
+			                        ), LocationMaster[Code])
+			RETURN DIVIDE(_slowatCount, _totalstore, 0)
+			// IF(not ISINSCOPE(LocationMaster[Code]),
+			//     DIVIDE(_slowatCount, _totalstore, 0))
+			```
+		lineageTag: b9ff114d-629b-498f-9844-d135ffec83f8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure recall_overview = ```
+			
+			IF(ISINSCOPE(ArticleMaster[Article No]) && NOT ISINSCOPE(LocationMaster[Code]),
+			        CONCATENATEX(
+			            FILTER(
+			                ALL(LocationMaster[Code]),
+			                // not [Status] IN {"Fast", "Super Fast", "Medium", BLANK()} && 
+			                [Closing] > 0
+			            ),
+			            LocationMaster[Code] & ": " & [Status] & " from  " & [Age] & " days" & ": CBS-" & [Closing],
+			            UNICHAR(10)
+			        )
+			)
+			```
+		lineageTag: 04b94c55-b049-4207-8b8c-3b15816f4bed
+
+	partition All_Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

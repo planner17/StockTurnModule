@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Stock Turn Module"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c762451d-8545-469a-a659-6ee17ed11314"
+  }
+}

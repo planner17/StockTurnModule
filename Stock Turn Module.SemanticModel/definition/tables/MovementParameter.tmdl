@@ -1,0 +1,26 @@
+table MovementParameter
+	lineageTag: eb237e02-d749-44e6-b38b-5b1602f4c644
+
+	measure 'MovementParameter Value' = SELECTEDVALUE('MovementParameter'[MovementParameter], 0)
+		formatString: 0
+		lineageTag: 85998e95-ca85-46bb-ab7b-cf0f40ea74d7
+
+	column MovementParameter
+		formatString: 0
+		lineageTag: 8622b5c5-f6e0-49ec-8aee-1846ec9a112f
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition MovementParameter = calculated
+		mode: import
+		source = GENERATESERIES(-5000, 5000, 1)
+
+	annotation PBI_Id = 9a6ecbe735b348a9982aece91e4171fe
+

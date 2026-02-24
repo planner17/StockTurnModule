@@ -1,0 +1,57 @@
+relationship AutoDetected_e020e9f8-ed4e-4a27-b1f8-ca0ff356b7b2
+	fromColumn: OBS_sheet.'Location Id'
+	toColumn: LocationMaster.LocationID
+
+relationship b275c255-1011-3286-027e-b876d89f2467
+	fromColumn: 'INWARD & OUTWARD'.'Transaction Location Id'
+	toColumn: LocationMaster.LocationID
+
+relationship bd144136-b34e-434c-ba6d-714df39cd95d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar.Date
+	toColumn: LocalDateTable_b94575be-bcbb-4510-a5ed-a6c6575effc8.Date
+
+relationship 10ca914c-8db0-57c9-8a2c-21dd58fb014f
+	fromColumn: 'INWARD & OUTWARD'.'Transaction Date'
+	toColumn: Calendar.Date
+
+relationship e83afbe8-dce0-822b-fee9-53b4c985b390
+	fromColumn: 'INWARD & OUTWARD'.Uid
+	toColumn: ArticleMaster.Uid
+
+relationship bee3ec39-66f2-de18-61f8-2ac247014154
+	fromColumn: OBS_sheet.Uid
+	toColumn: ArticleMaster.Uid
+
+relationship 293156ad-9f45-fba3-fca9-a283b9183905
+	fromColumn: 'INWARD & OUTWARD'.'Transaction type'
+	toColumn: TransactionType.type
+
+relationship 701d5596-2f10-a984-3334-9c4224ce5aed
+	fromColumn: OBS_sheet.OpeningDate
+	toColumn: Calendar.Date
+
+relationship e8784305-d8fe-b746-df84-89e6af6460e8
+	isActive: false
+	fromColumn: OBS_sheet.ClosingDate
+	toColumn: Calendar.Date
+
+relationship 7a7a44a5-b5b4-4835-98cb-0beba1c0398d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'INWARD & OUTWARD'.MaxSaleDate
+	toColumn: LocalDateTable_7edc6a93-bd7e-45f9-aef3-05d82ebd2a2f.Date
+
+relationship af454fb7-e0c3-c529-827a-5e499217bc72
+	isActive: false
+	fromColumn: ArticleMaster.'Size Name'
+	toColumn: SizeMaster.'Size Name'
+
+relationship 98b290a0-e96d-8378-0bc5-372199dcfedb
+	fromColumn: ArticleMaster.sizesetid
+	toColumn: 'Size Set'.sizesetid
+
+relationship 32e04e19-ab54-49c9-a86f-e13912b4fe39
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Purchases.Date
+	toColumn: LocalDateTable_1ef6fd59-816c-4d04-b891-48371bd4084e.Date
+

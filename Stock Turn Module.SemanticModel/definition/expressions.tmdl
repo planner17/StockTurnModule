@@ -1,0 +1,30 @@
+expression UniqueARticleInOut =
+		let
+		    Source = #"INWARD & OUTWARD",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Brand Name", "Section Name", "Article Name", "Article No", "Gender", "Transaction RSP", "UPC", "Size Name","Season Name","Season2"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+		    #"Reordered Columns" = Table.ReorderColumns(#"Removed Duplicates",{"Article No", "Section Name", "Article Name", "Gender", "Brand Name", "Transaction RSP"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Reordered Columns",{{"Transaction RSP", "SKU RSP"}}),
+		    #"Reordered Columns1" = Table.ReorderColumns(#"Renamed Columns",{"UPC", "Article No", "Section Name", "Article Name", "Gender", "Brand Name", "SKU RSP"})
+		in
+		    #"Reordered Columns1"
+	lineageTag: 13b98426-b924-4a9e-81e7-4159c197aef1
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression UniqueARticleOBS =
+		let
+		    Source = OBS_sheet,
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"UPC", "Article No", "Section Name", "Sub Section Name", "Article Name", "Gender", "Brand Name", "Size Name", "SKU RSP","Season Name","Season2"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+		    #"Removed Other Columns1" = Table.SelectColumns(#"Removed Duplicates",{"UPC", "Article No", "Section Name", "Article Name", "Gender", "Brand Name", "Size Name", "SKU RSP","Season Name","Season2"})
+		in
+		    #"Removed Other Columns1"
+	lineageTag: 2be506f2-3568-491a-9afc-71d5cf007411
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,19 @@
+DEFINE
+    MEASURE 'All_Measures'[Qty] = var _opening = SUM(OBS_sheet[OBS Qty])
+var _closing = CALCULATE(SUM(OBS_sheet[CBS Qty]), USERELATIONSHIP('Calendar'[Date], OBS_sheet[ClosingDate]))
+var _transqty = SUM('INWARD & OUTWARD'[Transaction Quantity])
+var _sale = CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]), 'Calendar'[Date] >= SELECTEDVALUE('Calendar'[Date]))
+
+var _Add = _opening + _closing + _transqty
+var _startdate = IF(_Add <> 0, SELECTEDVALUE('Calendar'[Date]))
+RETURN
+    SWITCH(TRUE(),
+        SELECTEDVALUE(TransactionType[type]) = "Opening", _opening,
+        SELECTEDVALUE(TransactionType[type]) = "Closing", _closing,
+        SELECTEDVALUE(TransactionType[type]) = "Sale Velocity", _sale,
+        _transqty)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Qty", [Qty]
+    )

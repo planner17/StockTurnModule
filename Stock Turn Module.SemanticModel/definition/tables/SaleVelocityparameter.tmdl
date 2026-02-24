@@ -1,0 +1,26 @@
+table SaleVelocityparameter
+	lineageTag: c67c95df-6bbf-45a4-8cb2-9f5bf8532bda
+
+	measure 'SaleVelocityparameter Value' = SELECTEDVALUE('SaleVelocityparameter'[SaleVelocityparameter], 0)
+		formatString: 0
+		lineageTag: 62f80512-4cc1-4bae-b554-6fb6aeb0fe49
+
+	column SaleVelocityparameter
+		formatString: 0
+		lineageTag: 8924e580-cfeb-4f0b-9041-e6f0f40891f8
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition SaleVelocityparameter = calculated
+		mode: import
+		source = GENERATESERIES(-5000, 5000, 1)
+
+	annotation PBI_Id = ca14ca41a4d647629d27db628871519e
+

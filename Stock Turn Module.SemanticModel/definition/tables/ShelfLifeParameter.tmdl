@@ -1,0 +1,26 @@
+table ShelfLifeParameter
+	lineageTag: 31e77d62-defe-4172-bc44-2658ca29624c
+
+	measure 'Shelf Life Value' = SELECTEDVALUE('ShelfLifeParameter'[Shelf Life], 90)
+		formatString: 0
+		lineageTag: 80acbd6f-913e-4c65-b573-a8c0d22d00ce
+
+	column 'Shelf Life'
+		formatString: 0
+		lineageTag: 7279a8d9-072f-4881-a8b1-a0b0cd47a704
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition ShelfLifeParameter = calculated
+		mode: import
+		source = GENERATESERIES(1, 100, 1)
+
+	annotation PBI_Id = 7120ba1b2054426b83fa56bbd2b64aff
+

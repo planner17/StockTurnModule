@@ -1,0 +1,76 @@
+table 'Size Set'
+	lineageTag: 696204b9-5caf-4512-8b3a-5a903724e0cd
+
+	column Brand
+		dataType: string
+		lineageTag: 10d0785d-3c10-4b00-80fc-c4a4b2ad11ab
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 58a16909-100d-49fc-9e05-fca4804f0a32
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Size Type'
+		dataType: string
+		lineageTag: 16e7f04d-027e-4f17-829a-22f7f04de83a
+		summarizeBy: none
+		sourceColumn: Size Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Size
+		dataType: string
+		lineageTag: 0b0b1083-af17-40b4-993b-d2cc5fc99222
+		summarizeBy: none
+		sourceColumn: Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 7c3e35a0-60d7-4501-a28a-3b74ee7f8fb6
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Section Name'
+		dataType: string
+		lineageTag: 93ae60de-7150-4641-bf4f-8e1bc110c2c9
+		summarizeBy: none
+		sourceColumn: Section Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column sizesetid = ```
+			
+			    'Size Set'[Size] & "-" &
+			    'Size Set'[Brand] & "-" &
+			    'Size Set'[Section Name] & "-" &
+			    'Size Set'[Gender]
+			```
+		lineageTag: 3e75890a-f75c-47c2-8b4d-49421c2a5326
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Size Set' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("nZhNSwJRGIX/Ssw6Iq38WM7GTSnBbAJxMehAg4qiVtCvbxINyfOce+8srBbPE57re96rTqfZpF5W2W02Lle/v4r6u7opqkPzZ795TPLmx2izOXxV5S6b3Rp80Dzyz1U0P0zkO/epQidV6LrEo2p9ZfTunlKV/lHhp6WcQQtnGHCu4xfnKPl2W+6qlafHf/89Cn9Jw98S+e5RoGevzselVbzNqwSbQAk+szIgdbGs5u/Vbp/QaqtAs60D7bYONdxL0HIv6aZfOLK6baTw4cn2trJaHaAsgjV0FayiR9sqUAfrhAsRvQoCTvAM4ldCQAqfQ8JqyPf1PGUvMA9zzQKMNAs0zcboJIaAPcCCHBXG9ZQwr19q5mE2WAiMRXQ7nOBDx/fCGYHgCY14/ViXCYVAHPqAPNQBeWoDC7oMzOsuIC/nAmk9FIjrlxdxGAfk/SxEt8DwNm98B4zgM6fcCYt6USZdCizQrcAGXQts4L1gFLgYjAE3Axt6TzIPa5IFWHks0JJkIzQh8feDMwLJE24Ip4TSt2mIch79oCgFPplbp9fC6Wvn9InyuV7s/8WXURB/SMP1QSFuv1m5xnsSv3iXHBvXKjqyVXRsq+joVtHxz++HYrMzr4MzD61AXkdmHvKe2xAdmAVIzEJgEURnZkGHPt34sZER14ER13ER12ERF1FnPw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Brand = _t, Gender = _t, #"Size Type" = _t, Size = _t, Status = _t, #"Section Name" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Brand", type text}, {"Gender", type text}, {"Size Type", type text}, {"Size", type text}, {"Status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
