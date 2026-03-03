@@ -7,7 +7,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["INWARD & OUTWARD","OBS_sheet","LocationMaster","UniqueARticleOBS","UniqueARticleInOut","ArticleMaster","All_Measures","TransactionType","Status filter","SizeMaster","Sizemerger","Size Set","SizeSetFilter"]
+annotation PBI_QueryOrder = ["INWARD & OUTWARD","OBS_sheet","LocationMaster","UniqueARticleOBS","UniqueARticleInOut","ArticleMaster","All_Measures","TransactionType","Status filter","SizeMaster","Sizemerger","Size Set","SizeSetFilter","Ledger_Master"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
@@ -36,6 +36,7 @@ ref table 'Size Set'
 ref table SizeSetFilter
 ref table Purchases
 ref table LocalDateTable_1ef6fd59-816c-4d04-b891-48371bd4084e
+ref table Ledger_Master
 
 ref cultureInfo en-US
 

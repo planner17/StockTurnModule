@@ -1,0 +1,227 @@
+table Ledger_Master
+	lineageTag: 1cf5a7f9-3f39-496c-871e-86a769940cfb
+
+	column 'Ledger Name'
+		dataType: string
+		lineageTag: 003d1f6e-7a5b-4021-a4f9-15e60333a9d2
+		summarizeBy: none
+		sourceColumn: Ledger Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: 81510c15-d082-4d4d-86cf-763ce3cdb1f4
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ledger Status'
+		dataType: string
+		lineageTag: 65c0f9fd-6138-4987-b443-6e52e24b4031
+		summarizeBy: none
+		sourceColumn: Ledger Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'GSTIN No.'
+		dataType: string
+		lineageTag: fc9d4be8-e45c-4945-bc88-efa3d42e91f5
+		summarizeBy: none
+		sourceColumn: GSTIN No.
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Legal Status'
+		dataType: string
+		lineageTag: 203f16cb-aac1-468e-9c16-6e1b6dbd34a0
+		summarizeBy: none
+		sourceColumn: Legal Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Taxpayer Type'
+		dataType: string
+		lineageTag: 910ef6f7-5b53-49c2-8775-3ef36ce18794
+		summarizeBy: none
+		sourceColumn: Taxpayer Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Profile
+		dataType: string
+		lineageTag: f3a044fd-3094-4e53-88d5-ac62e6767623
+		summarizeBy: none
+		sourceColumn: Profile
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory
+		dataType: string
+		lineageTag: 7fa8d6c4-c713-44a8-b996-e5dab883a05e
+		summarizeBy: none
+		sourceColumn: Territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Billing Address'
+		dataType: string
+		lineageTag: 68e5bb68-595a-4b46-a79b-b69534242a64
+		summarizeBy: none
+		sourceColumn: Billing Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pincode
+		dataType: string
+		lineageTag: ffeb5598-dc81-42ca-bce9-51861ede3119
+		summarizeBy: none
+		sourceColumn: Pincode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Billing Address (Tally)'
+		dataType: string
+		lineageTag: b7fca717-1519-4474-8c4a-243e30129e3e
+		summarizeBy: none
+		sourceColumn: Billing Address (Tally)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'City Name'
+		dataType: string
+		lineageTag: d6a557fa-38d5-487e-8d7f-10b07c9917b1
+		summarizeBy: none
+		sourceColumn: City Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Name'
+		dataType: string
+		lineageTag: 6f7184a7-56ff-4c42-a33b-c61dee620d01
+		summarizeBy: none
+		sourceColumn: State Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Phone No.'
+		dataType: string
+		lineageTag: ed7cd680-9231-4292-8e77-4fc796fa5072
+		summarizeBy: none
+		sourceColumn: Phone No.
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mobile No'
+		dataType: string
+		lineageTag: 6e27ab93-5d61-487d-a1f9-e5d8bcf3da30
+		summarizeBy: none
+		sourceColumn: Mobile No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Name'
+		dataType: string
+		lineageTag: 15ba8253-7cb1-4413-b256-2076457cb9da
+		summarizeBy: none
+		sourceColumn: Country Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Key Title'
+		dataType: string
+		lineageTag: 86362a57-6e34-4248-bf75-c73c2c1702ac
+		summarizeBy: none
+		sourceColumn: Key Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Contact Person'
+		dataType: string
+		lineageTag: 48eed775-1b16-48ef-adab-8560361a3db9
+		summarizeBy: none
+		sourceColumn: Contact Person
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Email iD'
+		dataType: string
+		lineageTag: 697e7e67-6404-41d1-818b-c807b58c7916
+		summarizeBy: none
+		sourceColumn: Email iD
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Prop Name'
+		dataType: string
+		lineageTag: 630e7448-c74d-4133-ae0f-0861d2429198
+		summarizeBy: none
+		sourceColumn: Prop Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Sale Type'
+		dataType: string
+		lineageTag: 847bdabb-1b6a-418c-ad9f-372f120f1727
+		summarizeBy: none
+		sourceColumn: Business Sale Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: cfaa44f3-dfbd-4907-bf2b-61fd4670d5df
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column ForAnalysis
+		dataType: string
+		lineageTag: be143351-ed64-420d-8114-abb89a9cc38e
+		summarizeBy: none
+		sourceColumn: ForAnalysis
+
+		annotation SummarizationSetBy = Automatic
+
+	column ForCompliance
+		dataType: string
+		lineageTag: e9186a49-f8a3-4561-ba79-3ed32b2d08f6
+		summarizeBy: none
+		sourceColumn: ForCompliance
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ledger Name Wizapp'
+		dataType: string
+		lineageTag: ff299051-387b-4f6f-a37c-6fce4ea96cd4
+		summarizeBy: none
+		sourceColumn: Ledger Name Wizapp
+
+		annotation SummarizationSetBy = Automatic
+
+	column Lid
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a9d5f97-0ab4-4c3b-9afa-71aabf14672d
+		summarizeBy: sum
+		sourceColumn: Lid
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Ledger_Master = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\Power BI Report\StockTurnReport\DF\WorkingLedgerMaster.xlsx"), null, true),
+				    Ledger_Master_Sheet = Source{[Item="Ledger_Master",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Ledger_Master_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Ledger Name", type text}, {"Company", type text}, {"Ledger Status", type text}, {"GSTIN No.", type text}, {"Legal Status", type text}, {"Taxpayer Type", type text}, {"Profile", type text}, {"Territory", type text}, {"Billing Address", type text}, {"Pincode", type any}, {"Billing Address (Tally)", type text}, {"City Name", type text}, {"State Name", type text}, {"Phone No.", type text}, {"Mobile No", type text}, {"Country Name", type text}, {"Key Title", type text}, {"Contact Person", type text}, {"Email iD", type text}, {"Prop Name", type text}, {"Business Sale Type", type text}, {"Category", type text}, {"ForAnalysis", type text}, {"ForCompliance", type text}, {"Ledger Name Wizapp", type text}, {"Lid", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
