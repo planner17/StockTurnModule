@@ -1,0 +1,26 @@
+table AgeParameter
+	lineageTag: 52cf83ab-8afd-48e8-b5f6-d29c47364fdc
+
+	measure 'AgeParameter Value' = SELECTEDVALUE('AgeParameter'[AgeParameter], 0)
+		formatString: 0
+		lineageTag: d48366db-0183-4286-b11f-46fd637dc22c
+
+	column AgeParameter
+		formatString: 0
+		lineageTag: 9793dd58-13a7-4a85-bc31-c52a5c10a562
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition AgeParameter = calculated
+		mode: import
+		source = GENERATESERIES(0, 1000, 1)
+
+	annotation PBI_Id = c541fadd5988431ebb5ba8db1a0b75d9
+

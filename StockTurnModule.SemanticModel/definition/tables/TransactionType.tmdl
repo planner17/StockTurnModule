@@ -1,0 +1,56 @@
+table TransactionType
+	lineageTag: d6f59e96-bb8e-4f87-9d67-a296b40e5219
+
+	column type
+		dataType: string
+		lineageTag: 95b0492e-ed88-4ba0-9c8b-94bcdd839f4d
+		summarizeBy: none
+		sourceColumn: type
+		sortByColumn: id
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 377dfc67-24c2-4731-b1cb-96a26f9d2198
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Group
+		dataType: string
+		lineageTag: 3706a10a-dfbc-492e-919a-d73671dfc891
+		summarizeBy: none
+		sourceColumn: Group
+		sortByColumn: idGroup
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column idGroup
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bb941da-95fb-4f3d-bac2-e54037f3560d
+		summarizeBy: none
+		sourceColumn: idGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	partition TransactionType = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("dZFNb8IwDIb/SpXTDhzW8VE4TkXaZQi0TuNQccjAaiJlCUpSpv77xQ2k7sYOluzHr5zXcV2zNSh5AdtlpeBKcf2wr17ZhBUhtq3/5vYUshk7TGr2Yk17zkoLJ+m18RAayxB38Jzo1/CZ+OLfqbvWHgV3KHpKM0dw0O6FUeC4ii/9nbjj1ndjQ6sQd/CC6KnP/DHpKS6InHjL86QmdEnE1PEsRBXTaS95A8+lypC5Hv7qb8+gpW7wIVyWVNgtlXHXGj9uKFd9GydlH6DMUfoORbfnRzCOegfnQ4W7pxT5c9NvicauaeQbc4Ev0CjM8Q60jveqPPctLpXj5YdqOnjzIty0EUiLmzXCwkUPPw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"type" = _t, id = _t, Group = _t, idGroup = _t]),
+				    #"Changed Type1" = Table.TransformColumnTypes(Source,{{"id", Int64.Type}, {"idGroup", Int64.Type}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

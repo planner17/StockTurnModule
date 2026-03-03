@@ -1,0 +1,142 @@
+table ArticleMaster
+	lineageTag: 65f379ee-ccbe-4901-903d-565769e02054
+
+	column 'Article No'
+		dataType: string
+		lineageTag: 4154b4f6-e06a-47f4-9134-eb2c13160e20
+		summarizeBy: none
+		sourceColumn: Article No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Section Name'
+		dataType: string
+		lineageTag: 3306869f-2e96-4444-af1c-7588e48b7031
+		summarizeBy: none
+		sourceColumn: Section Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article Name'
+		dataType: string
+		lineageTag: a56cf069-7fa6-473b-8b8a-29ef99672296
+		summarizeBy: none
+		sourceColumn: Article Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: d70b66a1-5b88-4031-8479-fcd25996d0ed
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Name'
+		dataType: string
+		lineageTag: cf0c2a53-84b5-41c8-8ae8-77ef3bab27e3
+		summarizeBy: none
+		sourceColumn: Brand Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SKU RSP'
+		dataType: int64
+		formatString: 0
+		lineageTag: fedffcfc-7ca5-4c1a-8f0d-4c317985d3af
+		summarizeBy: sum
+		sourceColumn: SKU RSP
+
+		annotation SummarizationSetBy = Automatic
+
+	column Uid
+		dataType: string
+		lineageTag: 1d358e1e-15e3-4eb4-9a82-4a4040c1e9c2
+		summarizeBy: none
+		sourceColumn: Uid
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPC
+		dataType: string
+		lineageTag: 83b425a5-d8d8-4ca6-b439-842f7467affb
+		summarizeBy: none
+		sourceColumn: UPC
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Size Name'
+		dataType: string
+		lineageTag: 770a25cf-4641-4ec2-88da-0801199634ef
+		summarizeBy: none
+		sourceColumn: Size Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article with Name' = ArticleMaster[Article No] & UNICHAR(10) & ArticleMaster[Article Name]
+		lineageTag: 942f4e08-9755-44fc-ba1d-01b53b37c01d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column sizewithlabel = "Size : " & ArticleMaster[Size Name]
+		lineageTag: dc03bd14-eac5-4fd4-b4c2-8a9812d17051
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Season Name'
+		dataType: string
+		lineageTag: 9ca67211-7d09-437d-9e4a-9de769320099
+		summarizeBy: none
+		sourceColumn: Season Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Season2
+		dataType: string
+		lineageTag: c5d19931-2712-4749-93e9-30d033804a14
+		summarizeBy: none
+		sourceColumn: Season2
+
+		annotation SummarizationSetBy = Automatic
+
+	column sizesetid = ```
+			
+			    ArticleMaster[Size Name] & "-" &
+			    ArticleMaster[Brand Name] & "-" &
+			    ArticleMaster[Section Name] & "-" &
+			    ArticleMaster[Gender]
+			
+			```
+		lineageTag: f0f59696-6d59-4c50-b3eb-fe5c686a99f8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column sizeSet = RELATED('Size Set'[Status])
+		lineageTag: 86cb2c18-8fae-4de2-8b1e-5f5de914e5a0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ArticleMaster = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({UniqueARticleOBS, UniqueARticleInOut}),
+				    #"Inserted Merged Column" = Table.AddColumn(Source, "Uid", each Text.Combine({[UPC], Text.From([SKU RSP], "en-US")}, ""), type text),
+				    #"Removed Duplicates" = Table.Distinct(#"Inserted Merged Column"),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each [Brand Name] = "Columbia" or [Brand Name] = "NIKE" or [Brand Name] = "PRO CARE" or [Brand Name] = "SKECHERS" or [Brand Name] = "SWISS MILITARY" or [Brand Name] = "TIMEX" or [Brand Name] = "ADIDAS" or [Brand Name] = "JUST CORSECA" or [Brand Name] = "ASICS" or [Brand Name] = "LACE UP" or [Brand Name] = "PUMA" or [Brand Name] = "CROCS" or [Brand Name] = "LOW TOP" or [Brand Name] = "SLIP INS" or [Brand Name] = "HIGH TOP" or [Brand Name] = "PROMO" or [Brand Name] = "SLIP ON" or [Brand Name] = "SLIP ON-F/B"),
+				    #"Removed Duplicates1" = Table.Distinct(#"Filtered Rows", {"Uid"}),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Removed Duplicates1",{{"Section Name", Text.Proper, type text}, {"Gender", Text.Proper, type text}, {"Brand Name", Text.Proper, type text}, {"Article Name", Text.Proper, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Capitalized Each Word","NA","N/A",Replacer.ReplaceText,{"Season Name"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","NA","N/A",Replacer.ReplaceText,{"Season2"})
+				in
+				    #"Replaced Value1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

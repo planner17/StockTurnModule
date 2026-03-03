@@ -1,0 +1,260 @@
+table OBS_sheet
+	lineageTag: 8bf5c9d4-c811-499c-b1fa-6f310cd5c934
+
+	column 'Location Id'
+		dataType: string
+		lineageTag: b6a80a9c-d3df-4663-a256-c953e5b19ae7
+		summarizeBy: none
+		sourceColumn: Location Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Location Alias'
+		dataType: string
+		lineageTag: 2236d2c6-5930-4636-a1d7-ea521835609d
+		summarizeBy: none
+		sourceColumn: Location Alias
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Location Name'
+		dataType: string
+		lineageTag: 26d98e53-d960-4e6d-ac79-420182925d9c
+		summarizeBy: none
+		sourceColumn: Location Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Code'
+		dataType: string
+		lineageTag: 81925779-f33a-4a2f-9703-812a022519f6
+		summarizeBy: none
+		sourceColumn: Item Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPC
+		dataType: string
+		lineageTag: cbb190dd-5589-4cb8-b540-57ca903272fe
+		summarizeBy: none
+		sourceColumn: UPC
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article No'
+		dataType: string
+		lineageTag: 9f690adc-59df-4856-bd8e-3e9fb5e3828b
+		summarizeBy: none
+		sourceColumn: Article No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Section Name'
+		dataType: string
+		lineageTag: 484fb157-c83c-47d1-ba3e-95f7ebc631a8
+		summarizeBy: none
+		sourceColumn: Section Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub Section Name'
+		dataType: string
+		lineageTag: 4ebf63ce-6e5f-4519-9ef9-0cb9ef66879e
+		summarizeBy: none
+		sourceColumn: Sub Section Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article Name'
+		dataType: string
+		lineageTag: d125f32e-48a9-41f8-b0aa-815c470bea10
+		summarizeBy: none
+		sourceColumn: Article Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: effed7e0-6da5-4b21-adfe-00119852323a
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Name'
+		dataType: string
+		lineageTag: 699c787b-45e6-43f1-b461-21df63a51bbb
+		summarizeBy: none
+		sourceColumn: Brand Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Size Name'
+		dataType: string
+		lineageTag: abf67924-eeb8-4481-8b4b-05fec041f802
+		summarizeBy: none
+		sourceColumn: Size Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SKU RSP'
+		dataType: int64
+		formatString: 0
+		lineageTag: c7bb7d30-19ae-4c95-985d-64afe0ffcb99
+		summarizeBy: sum
+		sourceColumn: SKU RSP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Wholesale Price'
+		dataType: int64
+		formatString: 0
+		lineageTag: 02734256-44cb-4086-bd81-05bf769f93f4
+		summarizeBy: sum
+		sourceColumn: Wholesale Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'OBS Qty'
+		dataType: int64
+		formatString: 0
+		lineageTag: efbe1fe8-e790-43f6-910e-cb95203ad73d
+		summarizeBy: sum
+		sourceColumn: OBS Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'OBS Value at MRP'
+		dataType: int64
+		formatString: 0
+		lineageTag: 02e13273-dc8a-44bd-a432-e327a74558b8
+		summarizeBy: sum
+		sourceColumn: OBS Value at MRP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CBS Qty'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3db2d01d-9457-4581-bbce-55e7697ab246
+		summarizeBy: sum
+		sourceColumn: CBS Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CBS Value at MRP'
+		dataType: int64
+		formatString: 0
+		lineageTag: c6aa42fe-cf18-42fe-9ada-6ce49ac1fc1a
+		summarizeBy: sum
+		sourceColumn: CBS Value at MRP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CBS Value at WSP'
+		dataType: int64
+		formatString: 0
+		lineageTag: 61588dba-a513-49a7-a137-ed233ea0bf34
+		summarizeBy: sum
+		sourceColumn: CBS Value at WSP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Net SLS Qty'
+		dataType: int64
+		formatString: 0
+		lineageTag: 34c76ce1-ce00-4846-bbe7-b67eb57646a3
+		summarizeBy: sum
+		sourceColumn: Net SLS Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column Uid
+		dataType: string
+		lineageTag: 01120227-dd14-4604-a2a6-91143d5fa831
+		summarizeBy: none
+		sourceColumn: Uid
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpeningDate = DATE(2025,4,1)
+		formatString: Long Date
+		lineageTag: 69958f6e-1611-43f7-b835-2bdd7ad4f8b7
+		summarizeBy: none
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ClosingDate = TODAY()
+		formatString: Long Date
+		lineageTag: 384222a4-9bee-4900-b28f-59925a49a2bf
+		summarizeBy: none
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MRPValue = OBS_sheet[SKU RSP] * OBS_sheet[CBS Qty]
+		formatString: 0
+		lineageTag: af0010ba-df79-44e7-9087-569e614e7508
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Season2
+		dataType: string
+		lineageTag: 6e9229da-29b4-4838-932a-a70f09e39826
+		summarizeBy: none
+		sourceColumn: Season2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Season Name'
+		dataType: string
+		lineageTag: ae7313ca-a2a3-4ab4-b035-ea62269efcdf
+		summarizeBy: none
+		sourceColumn: Season Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bin Name'
+		dataType: string
+		lineageTag: 93c15f4c-c6e6-488d-93b0-9f751705b999
+		summarizeBy: none
+		sourceColumn: Bin Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Style Name'
+		dataType: string
+		lineageTag: 0e9d0528-415a-44f6-b689-fdede5869c59
+		summarizeBy: none
+		sourceColumn: Style Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition OBS_sheet = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("localhost"),
+				    wizapp_data = Source{[Name="wizapp_data"]}[Data],
+				    #"dbo_OBS_sheet-PB" = wizapp_data{[Schema="dbo",Item="OBS_sheet-PB"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(#"dbo_OBS_sheet-PB", each not Text.Contains([Location Id], "total")),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Filtered Rows",{{"Location Id", type text}, {"Location Alias", type text}, {"Location Name", type text}, {"Item Code", type text}, {"Item Code w/o Batch", type text}, {"Article No", type text}, {"Section Name", type text}, {"Sub Section Name", type text}, {"Article Name", type text}, {"Gender", type text}, {"Brand Name", type text}, {"Size Name", type text}, {"SKU RSP", Int64.Type}, {"Wholesale Price", Int64.Type}, {"OBS Qty", Int64.Type}, {"OBS Value at MRP", Int64.Type}, {"CBS Qty", Int64.Type}, {"CBS Value at MRP", Int64.Type}, {"CBS Value at WSP", Int64.Type}, {"Net SLS Qty", Int64.Type}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type1",{{"Item Code w/o Batch", Text.Trim, type text}, {"Location Id", Text.Trim, type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Trimmed Text",{{"Item Code w/o Batch", "UPC"}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Renamed Columns",{{"UPC", Text.Trim, type text}}),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Trimmed Text1", "Uid", each Text.Combine({[UPC], Text.From([SKU RSP], "en-US")}, ""), type text)
+				in
+				    #"Inserted Merged Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

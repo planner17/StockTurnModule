@@ -1,0 +1,526 @@
+table 'INWARD & OUTWARD'
+	lineageTag: 13b4d141-810a-4d98-969d-76dac3a1c19d
+
+	column 'Transaction type'
+		dataType: string
+		lineageTag: c81a171c-ded5-4da1-8d74-23cb4d3e4187
+		summarizeBy: none
+		sourceColumn: Transaction type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cbe561b7-43de-40fc-ab1a-b5cbc3dfd73f
+		summarizeBy: none
+		sourceColumn: Transaction Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Transaction No'
+		dataType: string
+		lineageTag: 94c92df6-04c8-4a1e-865b-d678ec350fa7
+		summarizeBy: none
+		sourceColumn: Transaction No
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Location Id'
+		dataType: string
+		lineageTag: 1931191a-7f82-410a-b95d-f95c20e0e15c
+		summarizeBy: none
+		sourceColumn: Transaction Location Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Location Name'
+		dataType: string
+		lineageTag: 75400682-6a5e-4c25-b615-b8daf156c7a1
+		summarizeBy: none
+		sourceColumn: Transaction Location Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Party Name'
+		dataType: string
+		lineageTag: ee62e067-60ef-497d-ab8f-5b5d8d90d55d
+		summarizeBy: none
+		sourceColumn: Party Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Party City'
+		dataType: string
+		lineageTag: d3534014-c38a-435e-b8f4-35ac43f327f6
+		summarizeBy: none
+		sourceColumn: Party City
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Brand Name'
+		dataType: string
+		lineageTag: 52f06829-1f7f-459d-9dd9-8c4435be00c7
+		summarizeBy: none
+		sourceColumn: Brand Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Section Name'
+		dataType: string
+		lineageTag: 65e2b18f-2de5-4df4-9853-7c5d7a755a04
+		summarizeBy: none
+		sourceColumn: Section Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article Name'
+		dataType: string
+		lineageTag: 56c3ac59-785a-489c-a2da-d88f7dadbaa3
+		summarizeBy: none
+		sourceColumn: Article Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Style Name'
+		dataType: string
+		lineageTag: b3cb895b-efa6-4732-a926-f80b0cd91326
+		summarizeBy: none
+		sourceColumn: Style Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article No'
+		dataType: string
+		lineageTag: 80d7f6af-b923-44cf-86f6-bae68aec71e6
+		summarizeBy: none
+		sourceColumn: Article No
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weather
+		dataType: string
+		lineageTag: ada59d11-592b-465d-87b4-468c9df994d6
+		summarizeBy: none
+		sourceColumn: Weather
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Item Class'
+		dataType: string
+		lineageTag: bff3d0f7-8cb8-4410-8fba-01c46518424d
+		summarizeBy: none
+		sourceColumn: Item Class
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 8462c962-a41c-4dc7-bc93-07624a1ca6d9
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 1a5801c0-d660-4cd4-9db6-b4f2eff24718
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'HSN Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: e51256e6-77c9-4184-87de-e44ab779dbc0
+		summarizeBy: count
+		sourceColumn: HSN Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Colour Name'
+		dataType: string
+		lineageTag: 43c28f2f-d615-4524-8eef-b35cd49342ac
+		summarizeBy: none
+		sourceColumn: Colour Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SKU RSP'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b9fe3ae-8fb4-423d-ae4e-51ccb3305a8d
+		summarizeBy: sum
+		sourceColumn: SKU RSP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction RSP'
+		dataType: int64
+		formatString: 0
+		lineageTag: abc891ce-428d-4581-9160-277325164f33
+		summarizeBy: sum
+		sourceColumn: Transaction RSP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bin Name'
+		dataType: string
+		lineageTag: 693eb2c9-4972-4089-a930-54d9009842c1
+		summarizeBy: none
+		sourceColumn: Bin Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Quantity'
+		dataType: int64
+		formatString: 0
+		lineageTag: dc510f24-cc70-477f-ac98-0ca3a47d723d
+		summarizeBy: sum
+		sourceColumn: Transaction Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Taxable Value'
+		dataType: double
+		lineageTag: 7f762c0e-889a-497c-99c6-5fd0e0ff7f5c
+		summarizeBy: sum
+		sourceColumn: Transaction Taxable Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Transaction Total GST Amt'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c94e47f-ce5c-41c0-a166-3934055bc551
+		summarizeBy: sum
+		sourceColumn: Transaction Total GST Amt
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Value at MRP'
+		dataType: int64
+		formatString: 0
+		lineageTag: 01a03e32-186a-4e65-9450-79beaf387d08
+		summarizeBy: sum
+		sourceColumn: Transaction Value at MRP
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Value with GST'
+		dataType: double
+		lineageTag: b9cc4e2d-5223-4c2b-b079-3657f143b311
+		summarizeBy: sum
+		sourceColumn: Transaction Value with GST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UPC
+		dataType: string
+		lineageTag: c46c6488-17b7-4e2b-9f43-12e7746ead73
+		summarizeBy: none
+		sourceColumn: UPC
+
+		annotation SummarizationSetBy = Automatic
+
+	column Uid
+		dataType: string
+		lineageTag: b3f406fc-8d81-4f74-a74e-65df51161951
+		summarizeBy: none
+		sourceColumn: Uid
+
+		annotation SummarizationSetBy = Automatic
+
+	column sum_product = ```
+			
+			 var _Branch =    SWITCH(TRUE(),
+			                        'INWARD & OUTWARD'[Islatestdate] = TRUE() 
+			                        && 
+			                        'INWARD & OUTWARD'[Transaction type] = "Group Purchase"
+			                                , 'INWARD & OUTWARD'[Transaction Date] * 'INWARD & OUTWARD'[Transaction Quantity],
+			                        [Closing] = 0  
+			                        && 
+			                        'INWARD & OUTWARD'[Transaction type] = "Group Purchase"
+			                                ,'INWARD & OUTWARD'[Transaction Date] * 'INWARD & OUTWARD'      [Transaction Quantity]
+			                        ,0)
+			 var _LASA =    SWITCH(TRUE(),
+			                        'INWARD & OUTWARD'[Islatestdate] = TRUE() 
+			                        && 
+			                        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"} 
+			                        &&
+			                        'INWARD & OUTWARD'[ISfresh] = TRUE()
+			                                , 'INWARD & OUTWARD'[Transaction Date] * 'INWARD & OUTWARD'[Transaction Quantity],
+			                        [Closing] = 0  
+			                        && 
+			                        'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"} 
+			                        &&
+			                        'INWARD & OUTWARD'[ISfresh] = TRUE()
+			                                ,'INWARD & OUTWARD'[Transaction Date] * 'INWARD & OUTWARD'      [Transaction Quantity]
+			                        ,0)
+			RETURN
+			          IF('INWARD & OUTWARD'[Transaction Location Id] in {"LA", "SA"}, _LASA, _Branch)
+			```
+		lineageTag: b133c1a0-aa27-4957-acac-e12414a3abba
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MaxSaleDate = ```
+			
+			VAR CurrLoc = 'INWARD & OUTWARD'[Transaction Location Id]
+			VAR CurrArticle = 'INWARD & OUTWARD'[Article No]
+			var CurrUPC = 'INWARD & OUTWARD'[UPC]
+			RETURN
+			    CALCULATE(
+			        MAX('INWARD & OUTWARD'[Transaction Date]),
+			        FILTER(
+			            'INWARD & OUTWARD',
+			            'INWARD & OUTWARD'[Transaction Location Id] = CurrLoc
+			            && 'INWARD & OUTWARD'[UPC] = CurrUPC
+			            // && 'INWARD & OUTWARD'[Article No] = CurrArticle
+			        )
+			    )
+			
+			```
+		formatString: General Date
+		lineageTag: 3d146770-105e-4868-9c84-9aa4e0e764f9
+		summarizeBy: none
+
+		variation Variation
+			isDefault
+			relationship: 7a7a44a5-b5b4-4835-98cb-0beba1c0398d
+			defaultHierarchy: LocalDateTable_7edc6a93-bd7e-45f9-aef3-05d82ebd2a2f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Size Name'
+		dataType: string
+		lineageTag: 8e506ca7-fe2b-40b6-a92b-33654fb0e3ea
+		summarizeBy: none
+		sourceColumn: Size Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Season2
+		dataType: string
+		lineageTag: e9367de6-9b37-4167-b843-6b610ee40718
+		summarizeBy: none
+		sourceColumn: Season2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Season Name'
+		dataType: string
+		lineageTag: e6b45b5d-a50b-45bc-a6d6-eaf6457e3928
+		summarizeBy: none
+		sourceColumn: Season Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column runnintotal =
+			
+			
+			var _Branch = IF('INWARD & OUTWARD'[Transaction type] = "Group Purchase",
+			                    CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			                        FILTER(ALLSELECTED('INWARD & OUTWARD'),
+			                            'INWARD & OUTWARD'[Uid] = EARLIEST('INWARD & OUTWARD'[Uid]) &&
+			                            'INWARD & OUTWARD'[Transaction Location Id] = EARLIEST('INWARD & OUTWARD'[Transaction Location Id]) &&
+			                            'INWARD & OUTWARD'[Transaction Date] >= EARLIEST('INWARD & OUTWARD'[Transaction Date]) &&
+			                            'INWARD & OUTWARD'[Transaction type] = "Group Purchase")))
+			
+			
+			var _LASA = IF('INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"} &&
+			                            'INWARD & OUTWARD'[ISfresh] = TRUE(),
+			                    CALCULATE(SUM('INWARD & OUTWARD'[Transaction Quantity]),
+			                        FILTER(ALLSELECTED('INWARD & OUTWARD'),
+			                            'INWARD & OUTWARD'[Uid] = EARLIEST('INWARD & OUTWARD'[Uid]) &&
+			                            'INWARD & OUTWARD'[Transaction Location Id] = EARLIEST('INWARD & OUTWARD'[Transaction Location Id]) &&
+			                            'INWARD & OUTWARD'[Transaction Date] >= EARLIEST('INWARD & OUTWARD'[Transaction Date]) &&
+			                            'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"} &&
+			                            'INWARD & OUTWARD'[ISfresh] = TRUE())))
+			
+			
+			
+			return
+			       IF('INWARD & OUTWARD'[Transaction Location Id] in {"LA", "SA"}, _LASA, _Branch)
+		formatString: 0
+		lineageTag: e357ded3-3af2-4d15-b080-9f7c3674993c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column closing = ```
+			CALCULATE(SUM(OBS_sheet[CBS Qty]), 
+			                                FILTER(OBS_sheet,
+			                                OBS_sheet[Location Id] = EARLIEST('INWARD & OUTWARD'[Transaction Location Id])
+			                                &&  OBS_sheet[UPC] = EARLIEST('INWARD & OUTWARD'[UPC])))
+			```
+		formatString: 0
+		lineageTag: 2f7e838f-f8fc-433d-b75b-61b8b7a5e510
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column diff = ```
+			
+			    [Closing] - 'INWARD & OUTWARD'[runnintotal]
+			// MIN('INWARD & OUTWARD'[runnintotal], [Closing])
+			```
+		formatString: 0
+		lineageTag: 9f2aa581-80c8-4e3e-9cd8-7bc0ec6226fd
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Islatestdate = ```
+			
+			
+			var _latestpointBranch = IF('INWARD & OUTWARD'[Transaction type] = "Group Purchase",
+			                    CALCULATE(MIN('INWARD & OUTWARD'[diff]),
+			                        FILTER(ALL('INWARD & OUTWARD'),
+			                            'INWARD & OUTWARD'[Uid] = EARLIEST('INWARD & OUTWARD'[Uid]) &&
+			                            'INWARD & OUTWARD'[Transaction Location Id] = EARLIEST('INWARD & OUTWARD'[Transaction Location Id]) &&
+			                            'INWARD & OUTWARD'[diff] > EARLIEST('INWARD & OUTWARD'[diff]) &&
+			                            'INWARD & OUTWARD'[Transaction type] = "Group Purchase")))
+			
+			var _latestpointLASA = IF('INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"} &&
+			                            'INWARD & OUTWARD'[ISfresh] = TRUE(),
+			                    CALCULATE(MIN('INWARD & OUTWARD'[diff]),
+			                        FILTER(ALL('INWARD & OUTWARD'),
+			                            'INWARD & OUTWARD'[Uid] = EARLIEST('INWARD & OUTWARD'[Uid]) &&
+			                            'INWARD & OUTWARD'[Transaction Location Id] = EARLIEST('INWARD & OUTWARD'[Transaction Location Id]) &&
+			                            'INWARD & OUTWARD'[diff] > EARLIEST('INWARD & OUTWARD'[diff]) &&
+			                            'INWARD & OUTWARD'[Transaction type] in {"Group Purchase", "Party Credit Note", "Party Purchase"} &&
+			                            'INWARD & OUTWARD'[ISfresh] = TRUE())))
+			
+			
+			var _confirmation = IF('INWARD & OUTWARD'[Transaction Location Id] in {"LA", "SA"}, _latestpointLASA, _latestpointBranch)
+			
+			RETURN 
+			
+			SWITCH(TRUE(),
+			    [Closing] = 0, FALSE(),
+			     _confirmation >= 1, TRUE(),
+			      ISBLANK(_confirmation) , TRUE())
+			
+			
+			
+			// SWITCH(TRUE(),
+			//     [Closing] = 0, FALSE(),
+			//      _latestpoint >= 1, TRUE(),
+			//       ISBLANK(_latestpoint) , TRUE())
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1a73504e-ce62-442d-a477-48290eb29748
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISfresh = ```
+			
+			CONTAINSSTRING('INWARD & OUTWARD'[Transaction No], "GPG") ||
+			CONTAINSSTRING('INWARD & OUTWARD'[Transaction No], "CRT") ||
+			CONTAINSSTRING('INWARD & OUTWARD'[Transaction No], "PGG") ||
+			CONTAINSSTRING('INWARD & OUTWARD'[Transaction No], "PG")
+			
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 7137e998-4b31-412a-9fd6-07a5edb1058f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Eoss Discount Amt'
+		dataType: double
+		formatString: 0
+		lineageTag: 52b16e0c-7e89-4c6b-8042-e7fedbbc1dfc
+		summarizeBy: sum
+		sourceColumn: Eoss Discount Amt
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Discount Amt'
+		dataType: double
+		lineageTag: 94292f2a-361d-4132-9e95-461ba79ef41b
+		summarizeBy: sum
+		sourceColumn: Total Discount Amt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Manual Discount Amt'
+		dataType: double
+		formatString: 0
+		lineageTag: 457b32f2-af7d-400c-85de-ebe8630f351d
+		summarizeBy: sum
+		sourceColumn: Manual Discount Amt
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Bill Discount Amt'
+		dataType: double
+		formatString: 0
+		lineageTag: 33a38920-bab2-4fb9-8a94-e45ef307d3e6
+		summarizeBy: sum
+		sourceColumn: Bill Discount Amt
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transaction Location City'
+		dataType: string
+		lineageTag: 2ae2299c-89cc-4df5-b3b1-9769f9ff86f1
+		summarizeBy: none
+		sourceColumn: Transaction Location City
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'INWARD & OUTWARD' = m
+		mode: import
+		source = ```
+				let
+				    Source = Sql.Databases("localhost"),
+				    wizapp_data = Source{[Name="wizapp_data"]}[Data],
+				    #"dbo_DF-INWARD & OUTWARD-PB" = wizapp_data{[Schema="dbo",Item="DF-INWARD & OUTWARD-PB"]}[Data],
+				    #"Changed Type1" = Table.TransformColumnTypes(#"dbo_DF-INWARD & OUTWARD-PB",{{"Transaction type", type text}, {"Transaction Date", type date}, {"Transaction No", type text}, {"Transaction Location Id", type text}, {"Transaction Location Name", type text}, {"Party Name", type text}, {"Party City", type text},  {"Brand Name", type text}, {"Section Name", type text}, {"Article Name", type text}, {"Style Name", type text}, {"Article No", type text}, {"Weather", type text}, {"Item Class", type text}, {"Gender", type text}, {"Category", type text}, {"HSN Code", Int64.Type}, {"Colour Name", type text}, {"SKU RSP", Int64.Type}, {"Transaction RSP", Int64.Type}, {"Bin Name", type text}, {"Transaction Quantity", Int64.Type}, {"Transaction Taxable Value", type number}, {"Transaction Total GST Amt", Int64.Type}, {"Transaction Value at MRP", Int64.Type}, {"Transaction Value with GST", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type1", each not Text.Contains([Transaction type], "Total")),
+				    #"Trimmed Text" = Table.TransformColumns(#"Filtered Rows",{{"Transaction Location Id", Text.Trim, type text}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Trimmed Text",{{"Item Code w/o Batch", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type2",{{"Item Code w/o Batch", "UPC"}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Renamed Columns",{{"UPC", Text.Trim, type text}}),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Trimmed Text1", "Uid", each Text.Combine({[UPC], Text.From([SKU RSP], "en-US")}, ""), type text),
+				    #"Filtered Rows1" = Table.SelectRows(#"Inserted Merged Column", each ([Transaction Location Id] <> "HP" and [Transaction Location Id] <> "LS")),
+				    #"Added Custom" = Table.AddColumn(#"Filtered Rows1", "Filter_uwwanted_rows", each if 
+				   ([Transaction Location Id] = "SA" or [Transaction Location Id] = "LA")
+				   and
+				   (
+				       Text.Contains([Transaction No], "GPG") or
+				       Text.Contains([Transaction No], "CRT") or
+				       Text.Contains([Transaction No], "PGG") or
+				       Text.Contains([Transaction No], "PG") or 
+				       Text.Contains([Transaction type], "Group Wholesale") or     Text.Contains([Transaction type], "Party Wholesale")
+				   )
+				then true else false),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Isbranch", each if 
+				   ([Transaction Location Id] <> "SA" and [Transaction Location Id] <> "LA")
+				then true else false),
+				    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "FinalSelection", each [Filter_uwwanted_rows] = true or [Isbranch] = true),
+				    #"Filtered Rows2" = Table.SelectRows(#"Added Custom2", each ([FinalSelection] = true)),
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows2",{"Filter_uwwanted_rows", "Isbranch", "FinalSelection"})
+				in
+				    #"Removed Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

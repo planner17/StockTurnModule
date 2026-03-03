@@ -1,0 +1,24 @@
+table Sizemerger
+	lineageTag: 22a49cf2-c339-4eda-b5ef-eae08d99573f
+
+	column 'Size Name'
+		dataType: string
+		lineageTag: 5428cb22-a129-4d9c-a4b3-3aa9866b6975
+		summarizeBy: none
+		sourceColumn: Size Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sizemerger = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8i9IzcvMS1eK1YlWCigtSs5ILE4Fc4ITcyAM55z8YpgKx3SIWEhRal4KRFlJYklpMVxHSUZRfml6BpjvGxSgEJaYUwo1L7MqVSE4tUQpNhYA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Size Name" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Size Name", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

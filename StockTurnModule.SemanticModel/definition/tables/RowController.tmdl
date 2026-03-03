@@ -1,0 +1,53 @@
+table RowController
+	lineageTag: 4265763b-a735-4328-a6b0-3419df63aac8
+
+	column RowController
+		lineageTag: 2fed9365-81c4-4995-b879-18edcb8281cb
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'RowController Order'
+
+		relatedColumnDetails
+			groupByColumn: 'RowController Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RowController Fields'
+		isHidden
+		lineageTag: 029bcafe-cda8-4a77-ab00-fcee81f1974a
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'RowController Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'RowController Order'
+		isHidden
+		formatString: 0
+		lineageTag: 4f5cca0d-69ec-42e1-bc6c-5abbd6ad1461
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RowController = calculated
+		mode: import
+		source =
+				{
+				    ("Article No", NAMEOF('ArticleMaster'[Article No]), 0),
+				    ("Article Name", NAMEOF(ArticleMaster[Article Name]), 1),
+				    ("Article & Name", NAMEOF(ArticleMaster[Article with Name]), 2),
+				    ("Section Name", NAMEOF('ArticleMaster'[Section Name]), 3),
+				    ("Brand Name", NAMEOF('ArticleMaster'[Brand Name]), 4),
+				    ("Gender", NAMEOF('ArticleMaster'[Gender]), 5),
+				    ("SKU RSP", NAMEOF('ArticleMaster'[SKU RSP]), 6)
+				}
+
+	annotation PBI_Id = 47804ab0822c49cba7938e68b9f020c9
+

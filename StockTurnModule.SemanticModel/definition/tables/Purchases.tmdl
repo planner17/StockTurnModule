@@ -1,0 +1,110 @@
+table Purchases
+	lineageTag: cff5ff2c-3559-4fb7-8952-88ac4383f404
+
+	column Date
+		formatString: Short Date
+		lineageTag: c1427d64-c499-432d-8420-d84636f779b7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Date]
+
+		variation Variation
+			isDefault
+			relationship: 32e04e19-ab54-49c9-a86f-e13912b4fe39
+			defaultHierarchy: LocalDateTable_1ef6fd59-816c-4d04-b891-48371bd4084e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		lineageTag: 7bd73759-9cc5-48d0-98d0-79a149361650
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: LocationMaster[Code]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Article No'
+		lineageTag: 89cafd01-88c4-4a20-ae52-3eeca103fc04
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: ArticleMaster[Article No]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase
+		formatString: 0
+		lineageTag: 8003ad42-3a1d-4a79-be6f-952638db47e0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Purchase]
+
+		annotation SummarizationSetBy = Automatic
+
+	column runnigTotal = ```
+			
+			                    CALCULATE(SUM(Purchases[Purchase]),
+			                        FILTER(ALLSELECTED(Purchases),
+			                            Purchases[Article No] = EARLIEST(Purchases[Article No]) &&
+			                            Purchases[Code] = EARLIEST(Purchases[Code]) &&
+			                            Purchases[Date] >= EARLIEST(Purchases[Date])))
+			```
+		formatString: 0
+		lineageTag: 2bdfd13e-2935-4bea-8429-aba70119d04f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column closing = ```
+			CALCULATE(SUM(OBS_sheet[CBS Qty]), 
+			                                FILTER(OBS_sheet,
+			                                OBS_sheet[Location Id] = EARLIEST(Purchases[Code])
+			                                &&  OBS_sheet[Article No] = EARLIEST(Purchases[Article No])))
+			```
+		formatString: 0
+		lineageTag: 599a0b82-f442-49a7-a8d7-e38ecb0cbfb2
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column diff = ```
+			
+			    [Closing] - Purchases[runnigTotal]
+			```
+		formatString: 0
+		lineageTag: fb682974-f79a-42da-99b1-f46fe419d7a1
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column islatestdate = ```
+			
+			
+			var _latestpoint = 
+			                    CALCULATE(MIN(Purchases[diff]),
+			                        FILTER(ALL(Purchases),
+			                            Purchases[Article No] = EARLIEST(Purchases[Article No]) &&
+			                            Purchases[Code] = EARLIEST(Purchases[Code]) &&
+			                            Purchases[diff] > EARLIEST(Purchases[diff])))
+			
+			RETURN
+			    SWITCH(TRUE(),
+			    [Closing] = 0, FALSE(),
+			     _latestpoint >= 1, TRUE(),
+			      ISBLANK(_latestpoint) , TRUE())
+			    
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c94c710d-085e-497d-9258-b479c7435dcd
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Purchases = calculated
+		mode: import
+		source = ```
+				
+				        SUMMARIZECOLUMNS('Calendar'[Date], LocationMaster[Code], ArticleMaster[Article No], "Purchase", [Purchase])
+				```
+
+	annotation PBI_Id = 82c604e4abb74d40a673f825090cf56d
+

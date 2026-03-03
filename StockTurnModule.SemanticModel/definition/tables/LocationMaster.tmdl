@@ -1,0 +1,40 @@
+table LocationMaster
+	lineageTag: bd293602-d2a7-4e92-8d19-c34bae033791
+
+	column LocationID
+		dataType: string
+		lineageTag: aa8fc282-0feb-49e8-8806-6e9f6ed22b7d
+		summarizeBy: none
+		sourceColumn: LocationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: 8f8a41e8-5bb7-4df4-a82b-00c31489f24f
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocationName
+		dataType: string
+		lineageTag: e60772ac-d029-4100-98fd-c11281180033
+		summarizeBy: none
+		sourceColumn: LocationName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition LocationMaster = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("bZHdbsIwDIVfxeoVSBRBN7Hdum3ahjptZKdswHiMvf/yB5rGbiy354t9bF+vxX5XbApztL0rm8antJUtsHKoSUqDdNJnhAl75OK28fg+4PUgU9l1PhWnrEA9aPpAxoRUAZGeJSGs20GDxOgLksDX925XHcAs5LQl9akE7MkBuXabKryECthL/ewJShBs725ek3nH/5iHI2q7MKwisE4PDuGBufRj2QRvq5iv4U8Hs1yw65B/zf3m6bFmuzw6ZR5qZKWJzrCKem70HvilbcwTv7TZV5QTXoUrELemTzsjpeYpKoThMwY1+9HJL6uZ2c6MTmdGgpzCPKBJVFQG63/mAKQ7Je5M6r5twD7fjCQ0SOGxh4dahaOP43Qx/95jxMnPk8h8+yHfflxqxdDNs7OsJ+dN3X4A", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [LocationID = _t, Code = _t, LocationName = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"LocationID", type text}, {"Code", type text}, {"LocationName", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

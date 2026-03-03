@@ -1,0 +1,41 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["INWARD & OUTWARD","OBS_sheet","LocationMaster","UniqueARticleOBS","UniqueARticleInOut","ArticleMaster","All_Measures","TransactionType","Status filter","SizeMaster","Sizemerger","Size Set","SizeSetFilter"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","TMDLView_Desktop","DevMode"]
+
+ref table 'INWARD & OUTWARD'
+ref table DateTableTemplate_3bfbd36a-a61a-4bb3-87eb-ae97c05974bf
+ref table OBS_sheet
+ref table LocationMaster
+ref table Calendar
+ref table LocalDateTable_b94575be-bcbb-4510-a5ed-a6c6575effc8
+ref table ArticleMaster
+ref table All_Measures
+ref table ShelfLifeParameter
+ref table TransactionType
+ref table LocalDateTable_7edc6a93-bd7e-45f9-aef3-05d82ebd2a2f
+ref table AgeParameter
+ref table SaleVelocityparameter
+ref table SaleThroughParameter
+ref table MovementParameter
+ref table RowController
+ref table 'Status filter'
+ref table SizeMaster
+ref table Sizemerger
+ref table 'Size Set'
+ref table SizeSetFilter
+ref table Purchases
+ref table LocalDateTable_1ef6fd59-816c-4d04-b891-48371bd4084e
+
+ref cultureInfo en-US
+
