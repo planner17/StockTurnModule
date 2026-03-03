@@ -142,7 +142,7 @@
                                   "Entity": "ArticleMaster"
                                 }
                               },
-                              "Property": "Brand Name"
+                              "Property": "Article Name"
                             }
                           }
                         ],
