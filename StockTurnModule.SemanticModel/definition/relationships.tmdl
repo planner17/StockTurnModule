@@ -55,3 +55,8 @@ relationship 32e04e19-ab54-49c9-a86f-e13912b4fe39
 	fromColumn: Purchases.Date
 	toColumn: LocalDateTable_1ef6fd59-816c-4d04-b891-48371bd4084e.Date
 
+relationship 1be63985-f55d-4e84-8d2e-303ee4571eaa
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Eoss Scheme Name'.TransactionDate
+	toColumn: LocalDateTable_3bc579a9-9694-4f2c-8184-5ebc98c92711.Date
+
