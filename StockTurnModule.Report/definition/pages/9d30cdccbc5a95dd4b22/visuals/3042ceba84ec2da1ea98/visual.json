@@ -969,6 +969,34 @@
             }
           ]
         }
+      },
+      {
+        "name": "6a946e0ae024d9243b24",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "All_Measures"
+              }
+            },
+            "Property": "closingwithGT%"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e13a6933a4601588963d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "All_Measures"
+              }
+            },
+            "Property": "Mrp Value"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

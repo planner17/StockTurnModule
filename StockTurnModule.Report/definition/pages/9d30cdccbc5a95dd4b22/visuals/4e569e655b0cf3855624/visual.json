@@ -258,7 +258,7 @@
                     "Entity": "All_Measures"
                   }
                 },
-                "Property": "Closing"
+                "Property": "Outward"
               }
             },
             "direction": "Descending"

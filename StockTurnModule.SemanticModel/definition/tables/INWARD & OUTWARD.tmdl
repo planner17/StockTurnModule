@@ -440,7 +440,7 @@ table 'INWARD & OUTWARD'
 		annotation SummarizationSetBy = Automatic
 
 	column 'Eoss Discount Amt'
-		dataType: double
+		dataType: int64
 		formatString: 0
 		lineageTag: 52b16e0c-7e89-4c6b-8042-e7fedbbc1dfc
 		summarizeBy: sum
@@ -459,7 +459,7 @@ table 'INWARD & OUTWARD'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column 'Manual Discount Amt'
-		dataType: double
+		dataType: int64
 		formatString: 0
 		lineageTag: 457b32f2-af7d-400c-85de-ebe8630f351d
 		summarizeBy: sum
@@ -468,7 +468,7 @@ table 'INWARD & OUTWARD'
 		annotation SummarizationSetBy = Automatic
 
 	column 'Bill Discount Amt'
-		dataType: double
+		dataType: int64
 		formatString: 0
 		lineageTag: 33a38920-bab2-4fb9-8a94-e45ef307d3e6
 		summarizeBy: sum
@@ -515,9 +515,10 @@ table 'INWARD & OUTWARD'
 				then true else false),
 				    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "FinalSelection", each [Filter_uwwanted_rows] = true or [Isbranch] = true),
 				    #"Filtered Rows2" = Table.SelectRows(#"Added Custom2", each ([FinalSelection] = true)),
-				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows2",{"Filter_uwwanted_rows", "Isbranch", "FinalSelection"})
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows2",{"Filter_uwwanted_rows", "Isbranch", "FinalSelection"}),
+				    #"Filtered Rows3" = Table.SelectRows(#"Removed Columns", each ([Transaction Location Id] <> "LJ"))
 				in
-				    #"Removed Columns"
+				    #"Filtered Rows3"
 				```
 
 	annotation PBI_NavigationStepName = Navigation

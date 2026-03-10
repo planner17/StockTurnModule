@@ -477,6 +477,34 @@
             }
           ]
         }
+      },
+      {
+        "name": "ea8d6adb42a902596d00",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "ArticleMaster"
+              }
+            },
+            "Property": "sizewithlabel"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5b66eca5cd14909ac8e8",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "All_Measures"
+              }
+            },
+            "Property": "closingwithpercent"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

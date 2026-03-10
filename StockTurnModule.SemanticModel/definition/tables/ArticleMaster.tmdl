@@ -123,18 +123,33 @@ table ArticleMaster
 
 	partition ArticleMaster = m
 		mode: import
-		source =
+		source = ```
 				let
 				    Source = Table.Combine({UniqueARticleOBS, UniqueARticleInOut}),
 				    #"Inserted Merged Column" = Table.AddColumn(Source, "Uid", each Text.Combine({[UPC], Text.From([SKU RSP], "en-US")}, ""), type text),
 				    #"Removed Duplicates" = Table.Distinct(#"Inserted Merged Column"),
-				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each [Brand Name] = "Columbia" or [Brand Name] = "NIKE" or [Brand Name] = "PRO CARE" or [Brand Name] = "SKECHERS" or [Brand Name] = "SWISS MILITARY" or [Brand Name] = "TIMEX" or [Brand Name] = "ADIDAS" or [Brand Name] = "JUST CORSECA" or [Brand Name] = "ASICS" or [Brand Name] = "LACE UP" or [Brand Name] = "PUMA" or [Brand Name] = "CROCS" or [Brand Name] = "LOW TOP" or [Brand Name] = "SLIP INS" or [Brand Name] = "HIGH TOP" or [Brand Name] = "PROMO" or [Brand Name] = "SLIP ON" or [Brand Name] = "SLIP ON-F/B"),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each 
+				[Brand Name] = "Columbia" or
+				[Brand Name] = "NIKE" or
+				[Brand Name] = "PRO CARE" or
+				[Brand Name] = "SKECHERS" or
+				[Brand Name] = "SWISS MILITARY" or
+				[Brand Name] = "TIMEX" or
+				[Brand Name] = "ADIDAS" or
+				[Brand Name] = "JUST CORSECA" or
+				[Brand Name] = "ASICS" or
+				[Brand Name] = "PUMA" or
+				[Brand Name] = "CROCS" or
+				[Brand Name] = "PROMO"
+				),
 				    #"Removed Duplicates1" = Table.Distinct(#"Filtered Rows", {"Uid"}),
 				    #"Capitalized Each Word" = Table.TransformColumns(#"Removed Duplicates1",{{"Section Name", Text.Proper, type text}, {"Gender", Text.Proper, type text}, {"Brand Name", Text.Proper, type text}, {"Article Name", Text.Proper, type text}}),
 				    #"Replaced Value" = Table.ReplaceValue(#"Capitalized Each Word","NA","N/A",Replacer.ReplaceText,{"Season Name"}),
-				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","NA","N/A",Replacer.ReplaceText,{"Season2"})
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","NA","N/A",Replacer.ReplaceText,{"Season2"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Replaced Value1", each true)
 				in
-				    #"Replaced Value1"
+				    #"Filtered Rows1"
+				```
 
 	annotation PBI_NavigationStepName = Navigation
 
